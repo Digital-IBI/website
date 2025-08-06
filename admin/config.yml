@@ -18,7 +18,7 @@ collections:
   # Blog Posts
   - name: "blog"
     label: "Blog Posts"
-    folder: "_posts"
+    folder: "blogs"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
@@ -32,7 +32,7 @@ collections:
       - {label: "Draft", name: "draft", widget: "boolean", default: false}
       - {label: "Body", name: "body", widget: "markdown"}
 
-  # Pages
+  # Pages - Full HTML Editing with Front Matter
   - name: "pages"
     label: "Pages"
     files:
@@ -40,6 +40,8 @@ collections:
         label: "Homepage"
         name: "homepage"
         fields:
+          - {label: "Page Title", name: "title", widget: "string"}
+          - {label: "Meta Description", name: "meta_description", widget: "text"}
           - {label: "Hero Title", name: "hero_title", widget: "string"}
           - {label: "Hero Subtitle", name: "hero_subtitle", widget: "text"}
           - {label: "Hero Image", name: "hero_image", widget: "image"}
@@ -53,6 +55,7 @@ collections:
         name: "about"
         fields:
           - {label: "Page Title", name: "title", widget: "string"}
+          - {label: "Meta Description", name: "meta_description", widget: "text"}
           - {label: "Hero Title", name: "hero_title", widget: "string"}
           - {label: "Hero Image", name: "hero_image", widget: "image"}
           - {label: "Content", name: "content", widget: "markdown"}
@@ -62,10 +65,55 @@ collections:
         name: "contact"
         fields:
           - {label: "Page Title", name: "title", widget: "string"}
+          - {label: "Meta Description", name: "meta_description", widget: "text"}
           - {label: "Contact Form Title", name: "form_title", widget: "string"}
           - {label: "Contact Information", name: "contact_info", widget: "markdown"}
 
-  # Services
+      - file: "our-team.html"
+        label: "Our Team Page"
+        name: "team"
+        fields:
+          - {label: "Page Title", name: "title", widget: "string"}
+          - {label: "Meta Description", name: "meta_description", widget: "text"}
+          - {label: "Hero Title", name: "hero_title", widget: "string"}
+          - {label: "Hero Image", name: "hero_image", widget: "image"}
+          - {label: "Content", name: "content", widget: "markdown"}
+
+      - file: "projects.html"
+        label: "Projects Page"
+        name: "projects"
+        fields:
+          - {label: "Page Title", name: "title", widget: "string"}
+          - {label: "Meta Description", name: "meta_description", widget: "text"}
+          - {label: "Hero Title", name: "hero_title", widget: "string"}
+          - {label: "Hero Image", name: "hero_image", widget: "image"}
+          - {label: "Content", name: "content", widget: "markdown"}
+
+      - file: "partners.html"
+        label: "Partners Page"
+        name: "partners"
+        fields:
+          - {label: "Page Title", name: "title", widget: "string"}
+          - {label: "Meta Description", name: "meta_description", widget: "text"}
+          - {label: "Hero Title", name: "hero_title", widget: "string"}
+          - {label: "Hero Image", name: "hero_image", widget: "image"}
+          - {label: "Content", name: "content", widget: "markdown"}
+
+  # Image Management
+  - name: "images"
+    label: "Image Management"
+    folder: "assets/images"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Image Name", name: "title", widget: "string"}
+      - {label: "Image File", name: "image", widget: "image"}
+      - {label: "Alt Text", name: "alt", widget: "string"}
+      - {label: "Category", name: "category", widget: "select", options: ["hero", "about", "services", "projects", "team", "blog", "icons", "logos", "backgrounds"]}
+      - {label: "Usage", name: "usage", widget: "text"}
+      - {label: "Description", name: "description", widget: "text"}
+
+  # Services - Existing Service Pages
   - name: "services"
     label: "Services"
     folder: "services"
@@ -78,7 +126,7 @@ collections:
       - {label: "Featured Image", name: "image", widget: "image"}
       - {label: "Content", name: "body", widget: "markdown"}
 
-  # Products
+  # Products - Existing Product Pages
   - name: "products"
     label: "Products"
     folder: "products"
@@ -92,7 +140,7 @@ collections:
       - {label: "Price", name: "price", widget: "string", required: false}
       - {label: "Content", name: "body", widget: "markdown"}
 
-  # Projects
+  # Projects - Existing Project Pages
   - name: "projects"
     label: "Projects"
     folder: "projects"
@@ -105,6 +153,32 @@ collections:
       - {label: "Featured Image", name: "image", widget: "image"}
       - {label: "Client", name: "client", widget: "string"}
       - {label: "Category", name: "category", widget: "select", options: ["Web Development", "Mobile App", "Digital Marketing", "SEO"]}
+      - {label: "Content", name: "body", widget: "markdown"}
+
+  # Domains - Existing Domain Pages
+  - name: "domains"
+    label: "Domain Solutions"
+    folder: "domains"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Slug", name: "slug", widget: "string"}
+      - {label: "Description", name: "description", widget: "text"}
+      - {label: "Featured Image", name: "image", widget: "image"}
+      - {label: "Content", name: "body", widget: "markdown"}
+
+  # Landing Pages
+  - name: "landing_pages"
+    label: "Landing Pages"
+    folder: "lp"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Slug", name: "slug", widget: "string"}
+      - {label: "Description", name: "description", widget: "text"}
+      - {label: "Featured Image", name: "image", widget: "image"}
       - {label: "Content", name: "body", widget: "markdown"}
 
   # Configuration
