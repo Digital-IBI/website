@@ -39,6 +39,17 @@
   to = "/.netlify/functions/netlify-analytics/:splat"
   status = 200
 
+# CMS redirects
+[[redirects]]
+  from = "/admin"
+  to = "/admin/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/"
+  to = "/admin/index.html"
+  status = 200
+
 # Headers for security
 [[headers]]
   for = "/*"

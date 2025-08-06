@@ -1,0 +1,128 @@
+# Netlify CMS Configuration
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "assets/images/cms"
+public_folder: "/assets/images/cms"
+
+# Site settings
+site_url: https://digitalibi.netlify.app
+display_url: https://digitalibi.netlify.app
+
+# Localization
+locale: en
+
+# Collections
+collections:
+  # Blog Posts
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "_posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Publish Date", name: "date", widget: "datetime"}
+      - {label: "Featured Image", name: "image", widget: "image", required: false}
+      - {label: "Description", name: "description", widget: "text"}
+      - {label: "Category", name: "category", widget: "select", options: ["Technology", "Business", "Marketing", "Development"]}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Author", name: "author", widget: "string", default: "Admin"}
+      - {label: "Draft", name: "draft", widget: "boolean", default: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+
+  # Pages
+  - name: "pages"
+    label: "Pages"
+    files:
+      - file: "index.html"
+        label: "Homepage"
+        name: "homepage"
+        fields:
+          - {label: "Hero Title", name: "hero_title", widget: "string"}
+          - {label: "Hero Subtitle", name: "hero_subtitle", widget: "text"}
+          - {label: "Hero Image", name: "hero_image", widget: "image"}
+          - {label: "About Section Title", name: "about_title", widget: "string"}
+          - {label: "About Section Content", name: "about_content", widget: "markdown"}
+          - {label: "Services Section Title", name: "services_title", widget: "string"}
+          - {label: "Contact Section Title", name: "contact_title", widget: "string"}
+
+      - file: "about.html"
+        label: "About Page"
+        name: "about"
+        fields:
+          - {label: "Page Title", name: "title", widget: "string"}
+          - {label: "Hero Title", name: "hero_title", widget: "string"}
+          - {label: "Hero Image", name: "hero_image", widget: "image"}
+          - {label: "Content", name: "content", widget: "markdown"}
+
+      - file: "contact.html"
+        label: "Contact Page"
+        name: "contact"
+        fields:
+          - {label: "Page Title", name: "title", widget: "string"}
+          - {label: "Contact Form Title", name: "form_title", widget: "string"}
+          - {label: "Contact Information", name: "contact_info", widget: "markdown"}
+
+  # Services
+  - name: "services"
+    label: "Services"
+    folder: "services"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Slug", name: "slug", widget: "string"}
+      - {label: "Description", name: "description", widget: "text"}
+      - {label: "Featured Image", name: "image", widget: "image"}
+      - {label: "Content", name: "body", widget: "markdown"}
+
+  # Products
+  - name: "products"
+    label: "Products"
+    folder: "products"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Slug", name: "slug", widget: "string"}
+      - {label: "Description", name: "description", widget: "text"}
+      - {label: "Featured Image", name: "image", widget: "image"}
+      - {label: "Price", name: "price", widget: "string", required: false}
+      - {label: "Content", name: "body", widget: "markdown"}
+
+  # Projects
+  - name: "projects"
+    label: "Projects"
+    folder: "projects"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Slug", name: "slug", widget: "string"}
+      - {label: "Description", name: "description", widget: "text"}
+      - {label: "Featured Image", name: "image", widget: "image"}
+      - {label: "Client", name: "client", widget: "string"}
+      - {label: "Category", name: "category", widget: "select", options: ["Web Development", "Mobile App", "Digital Marketing", "SEO"]}
+      - {label: "Content", name: "body", widget: "markdown"}
+
+  # Configuration
+  - name: "config"
+    label: "Site Configuration"
+    files:
+      - file: "config/site-config.yml"
+        label: "Site Settings"
+        name: "site_config"
+        fields:
+          - {label: "Site Name", name: "site_name", widget: "string"}
+          - {label: "Site Description", name: "site_description", widget: "text"}
+          - {label: "Contact Email", name: "contact_email", widget: "string"}
+          - {label: "Contact Phone", name: "contact_phone", widget: "string"}
+          - {label: "Address", name: "address", widget: "text"}
+          - {label: "Social Media", name: "social_media", widget: "object", fields: [
+              {label: "Facebook", name: "facebook", widget: "string", required: false},
+              {label: "Twitter", name: "twitter", widget: "string", required: false},
+              {label: "LinkedIn", name: "linkedin", widget: "string", required: false},
+              {label: "Instagram", name: "instagram", widget: "string", required: false}
+            ]} 
