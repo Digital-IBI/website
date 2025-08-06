@@ -1,5 +1,5 @@
 // Netlify Function: Image Management
-const { getConfig } = require('../../../config/environment');
+const { COMMON_CONFIG } = require('../../../config/common-config');
 
 exports.handler = async (event, context) => {
   // CORS headers
@@ -19,7 +19,7 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    const config = getConfig();
+    const config = COMMON_CONFIG;
     const { httpMethod, path, body } = event;
     const imageId = path.split('/').pop();
 
