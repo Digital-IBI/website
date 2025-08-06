@@ -1,5 +1,5 @@
 // Netlify Function: Lead Management
-const { COMMON_CONFIG } = require('../../../config/common-config');
+const { CONFIG } = require('./config');
 
 exports.handler = async (event, context) => {
   // CORS headers
@@ -19,7 +19,7 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    const config = COMMON_CONFIG;
+    const config = CONFIG;
     const { httpMethod, path, body } = event;
     const leadId = path.split('/').pop();
 
