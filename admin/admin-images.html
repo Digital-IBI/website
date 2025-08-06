@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Management - Admin Panel</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Empty States CSS -->
+    <link rel="stylesheet" href="assets/css/empty-states.css">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            min-height: 100vh;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .main-content {
+            background: #f8f9fa;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .btn-custom {
+            border-radius: 25px;
+            padding: 10px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .nav-link {
+            color: rgba(255,255,255,0.8) !important;
+            border-radius: 10px;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: white !important;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-link.active {
+            background: rgba(255,255,255,0.2);
+            color: white !important;
+        }
+
+        .image-preview {
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+        }
+
+        .image-card {
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .image-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+        }
+
+        .images-container {
+            min-height: 400px;
+        }
+
+        .upload-container {
+            min-height: 200px;
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px 5px 0 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div id="loginForm" class="container-fluid" style="display: block;">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <h3><i class="fas fa-lock text-primary"></i> Admin Login</h3>
+                            <p class="text-muted">Enter your credentials to access the admin panel</p>
+                        </div>
+                        
+                        <form id="loginForm" onsubmit="handleLogin(event)">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <small>Google reCAPTCHA v3 will verify you're human automatically</small>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-custom w-100">
+                                <i class="fas fa-sign-in-alt"></i> Sign In
+                            </button>
+                        </form>
+                        
+                        <div class="text-center mt-3">
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createAdminModal">
+                                <i class="fas fa-user-plus"></i> Create Admin User
+                            </button>
+                        </div>
+                        
+                        <div class="text-center mt-2">
+                            <small class="text-muted">
+                                Use your email and password to login
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Content -->
+    <div id="adminContent" class="container-fluid" style="display: none;">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 sidebar p-0">
+                <div class="p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="mb-0">
+                            <i class="fas fa-cogs"></i>
+                            Admin Panel
+                        </h4>
+                        <button class="btn btn-sm btn-outline-light" onclick="handleLogout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                    
+                    <nav class="nav flex-column">
+                        <a class="nav-link" href="admin-dashboard.html">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Dashboard
+                        </a>
+                        <a class="nav-link" href="admin-leads.html">
+                            <i class="fas fa-users"></i>
+                            Leads
+                        </a>
+                        <a class="nav-link active" href="admin-images.html">
+                            <i class="fas fa-image"></i>
+                            Images
+                        </a>
+                        <a class="nav-link" href="admin-campaigns.html">
+                            <i class="fas fa-bullhorn"></i>
+                            Campaigns
+                        </a>
+                        <a class="nav-link" href="admin-analytics.html">
+                            <i class="fas fa-chart-line"></i>
+                            Analytics
+                        </a>
+                        <a class="nav-link" href="admin-security.html">
+                            <i class="fas fa-shield-alt"></i>
+                            Security
+                        </a>
+                        <a class="nav-link" href="admin-settings.html">
+                            <i class="fas fa-cog"></i>
+                            Settings
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 main-content">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Image Management</h2>
+                    <button class="btn btn-primary btn-custom" onclick="showUploadModal()">
+                        <i class="fas fa-upload"></i> Upload Image
+                    </button>
+                </div>
+
+                <!-- Image Statistics -->
+                <div id="statsContainer" class="mb-4">
+                    <!-- Statistics will be loaded here by JavaScript -->
+                </div>
+
+                <!-- Upload Section -->
+                <div id="uploadContainer" class="upload-container">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Upload New Image</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="uploadForm" onsubmit="handleImageUpload(event)">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="imageFile" class="form-label">Select Image *</label>
+                                            <input type="file" class="form-control" id="imageFile" accept="image/*" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="imageCategory" class="form-label">Category *</label>
+                                            <select class="form-select" id="imageCategory" required>
+                                                <option value="">Select Category</option>
+                                                <option value="banners">Banners</option>
+                                                <option value="hero_images">Hero Images</option>
+                                                <option value="product_images">Product Images</option>
+                                                <option value="team_photos">Team Photos</option>
+                                                <option value="logos">Logos</option>
+                                                <option value="icons">Icons</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="imageName" class="form-label">Image Name *</label>
+                                            <input type="text" class="form-control" id="imageName" placeholder="Enter image name" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="imageAlt" class="form-label">Alt Text</label>
+                                            <input type="text" class="form-control" id="imageAlt" placeholder="Alternative text for accessibility">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="imageDescription" class="form-label">Description</label>
+                                    <textarea class="form-control" id="imageDescription" rows="3" placeholder="Image description..."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-success btn-custom">
+                                    <i class="fas fa-upload"></i> Upload Image
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Images Grid -->
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Images</h5>
+                        <div>
+                            <button class="btn btn-outline-secondary btn-sm me-2" onclick="exportImages()">
+                                <i class="fas fa-download"></i> Export
+                            </button>
+                            <button class="btn btn-outline-secondary btn-sm" onclick="importImages()">
+                                <i class="fas fa-upload"></i> Import
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="imagesContainer" class="images-container">
+                            <!-- Images will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="../assets/js/bootstrap.min.js"></script>
+    
+    <!-- Common Configuration -->
+    <script src="../config/common-config.js"></script>
+    
+    <!-- Image Scanner Service -->
+    <script src="../services/image-scanner-service.js"></script>
+    
+    <!-- Empty States JS -->
+    <script src="../assets/js/empty-states.js?v=2"></script>
+    
+    <!-- Auth JS -->
+    <script src="../assets/js/auth.js?v=2"></script>
+    
+    <!-- Images JS -->
+    <script src="../assets/js/images.js?v=2"></script>
+
+    <!-- Image Management Script -->
+    <script>
+        // Image Scanner Service Integration
+        let imageScanner = null;
+        let scannedImages = [];
+
+        // Initialize image scanner
+        async function initializeImageScanner() {
+            try {
+                if (window.ImageScannerService) {
+                    imageScanner = new window.ImageScannerService();
+                    scannedImages = await imageScanner.scanImages();
+                    console.log('✅ Image scanner initialized');
+                    displayImageStatistics();
+                    displayImages();
+                } else {
+                    console.error('❌ ImageScannerService not available');
+                }
+            } catch (error) {
+                console.error('❌ Error initializing image scanner:', error);
+            }
+        }
+
+        // Display image statistics
+        function displayImageStatistics() {
+            if (!imageScanner) return;
+
+            const stats = imageScanner.getImageStatistics();
+            
+            // Update stats in the UI
+            const statsContainer = document.getElementById('statsContainer');
+            if (statsContainer) {
+                statsContainer.innerHTML = `
+                    <div class="row mb-4">
+                        <div class="col-md-2">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h6 class="text-white-50">Total Images</h6>
+                                            <h3 class="mb-0">${stats.total}</h3>
+                                        </div>
+                                        <div class="align-self-center">
+                                            <i class="fas fa-images fa-2x text-white-50"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h6 class="text-white-50">Need Optimization</h6>
+                                            <h3 class="mb-0">${stats.optimizationNeeded}</h3>
+                                        </div>
+                                        <div class="align-self-center">
+                                            <i class="fas fa-tools fa-2x text-white-50"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h6 class="text-white-50">HTML Direct</h6>
+                                            <h3 class="mb-0">${stats.byUsageType['html-direct'] || 0}</h3>
+                                        </div>
+                                        <div class="align-self-center">
+                                            <i class="fas fa-code fa-2x text-white-50"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h6 class="text-white-50">CSS Background</h6>
+                                            <h3 class="mb-0">${stats.byUsageType['css-background'] || 0}</h3>
+                                        </div>
+                                        <div class="align-self-center">
+                                            <i class="fas fa-palette fa-2x text-white-50"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h6 class="text-white-50">Hero Images</h6>
+                                            <h3 class="mb-0">${stats.byCategory['hero'] || 0}</h3>
+                                        </div>
+                                        <div class="align-self-center">
+                                            <i class="fas fa-star fa-2x text-white-50"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h6 class="text-white-50">Icons</h6>
+                                            <h3 class="mb-0">${stats.byCategory['icons'] || 0}</h3>
+                                        </div>
+                                        <div class="align-self-center">
+                                            <i class="fas fa-icons fa-2x text-white-50"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Display images in grid
+        function displayImages() {
+            const container = document.getElementById('imagesContainer');
+            if (!container || !scannedImages.length) return;
+
+            let html = '<div class="row">';
+            
+            scannedImages.forEach(image => {
+                html += `
+                    <div class="col-md-4 col-lg-3 mb-4">
+                        <div class="card image-card">
+                            <div class="card-img-top">
+                                <img src="../${image.path}" alt="${image.displayName}" class="image-preview">
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-title">${image.displayName}</h6>
+                                <p class="card-text small text-muted">
+                                    <strong>Category:</strong> ${image.category}<br>
+                                    <strong>Format:</strong> ${image.format.toUpperCase()}<br>
+                                    <strong>Size:</strong> ${image.fileSize}<br>
+                                    <strong>Usage:</strong> ${image.usageType}<br>
+                                    <strong>Optimization:</strong> 
+                                    <span class="badge ${image.metadata.optimization === 'optimized' ? 'bg-success' : 'bg-warning'}">
+                                        ${image.metadata.optimization}
+                                    </span>
+                                </p>
+                                <div class="btn-group btn-group-sm w-100">
+                                    <button class="btn btn-outline-primary" onclick="viewImageDetails('${image.name}')">
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
+                                    <button class="btn btn-outline-secondary" onclick="editImage('${image.name}')">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                    <button class="btn btn-outline-danger" onclick="deleteImage('${image.name}')">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // View image details
+        function viewImageDetails(imageName) {
+            const image = scannedImages.find(img => img.name === imageName);
+            if (!image) return;
+
+            const details = `
+                <strong>Name:</strong> ${image.name}<br>
+                <strong>Display Name:</strong> ${image.displayName}<br>
+                <strong>Category:</strong> ${image.category}<br>
+                <strong>Format:</strong> ${image.format.toUpperCase()}<br>
+                <strong>Size:</strong> ${image.fileSize}<br>
+                <strong>Usage Type:</strong> ${image.usageType}<br>
+                <strong>HTML Usage:</strong> ${image.usage.html.join(', ') || 'None'}<br>
+                <strong>CSS Usage:</strong> ${image.usage.css.join(', ') || 'None'}<br>
+                <strong>Dimensions:</strong> ${image.metadata.width}x${image.metadata.height}<br>
+                <strong>Aspect Ratio:</strong> ${image.metadata.aspectRatio}<br>
+                <strong>Optimization:</strong> ${image.metadata.optimization}<br>
+                <strong>Upload Date:</strong> ${new Date(image.metadata.uploadDate).toLocaleDateString()}
+            `;
+
+            alert(`Image Details:\n\n${details}`);
+        }
+
+        // Edit image
+        function editImage(imageName) {
+            const image = scannedImages.find(img => img.name === imageName);
+            if (!image) return;
+
+            // Populate form with image data
+            document.getElementById('imageName').value = image.displayName;
+            document.getElementById('imageCategory').value = image.category;
+            document.getElementById('imageAlt').value = image.displayName;
+            document.getElementById('imageDescription').value = `Editing ${image.displayName}`;
+
+            // Scroll to upload section
+            document.getElementById('uploadContainer').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Delete image
+        function deleteImage(imageName) {
+            if (confirm(`Are you sure you want to delete ${imageName}?`)) {
+                // Remove from scanned images
+                scannedImages = scannedImages.filter(img => img.name !== imageName);
+                
+                // Update display
+                displayImages();
+                displayImageStatistics();
+                
+                // Show notification
+                showNotification('Image deleted successfully', 'success');
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const container = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type} alert-dismissible fade show`;
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            container.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeImageScanner();
+        });
+    </script>
+</body>
+</html> 

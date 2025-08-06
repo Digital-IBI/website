@@ -1,0 +1,211 @@
+
+
+
+/*===========================
+    7.CTA css 
+===========================*/
+
+
+.infetech-cta-box{
+    background-image: url(../images/cta-bg.jpg);
+    position: relative;
+    z-index: 10;
+    padding: 80px 100px;
+    @media #{$md} {
+        padding: 30px;
+    }
+    @media #{$xs} {
+        padding: 30px;
+    }
+    &::before{
+        position: absolute;
+        content: '';
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        background-image: -moz-linear-gradient( 180deg, rgb(184,130,252) 0%, rgb(95,45,238) 100%);
+        background-image: -webkit-linear-gradient( 180deg, rgb(184,130,252) 0%, rgb(95,45,238) 100%);
+        background-image: -ms-linear-gradient( 180deg, rgb(184,130,252) 0%, rgb(95,45,238) 100%);
+        opacity: 0.85;
+        z-index: -1;
+
+    }
+    & .cta-content{
+        & .title{
+            font-size: 40px;
+            color: $white;
+            margin-bottom: 16px;
+            @media #{$md} {
+                margin-top: 30px;
+            }
+            @media #{$xs} {
+                margin-top: 30px;
+                font-size: 26px;
+            }
+            @media #{$sm} {
+                font-size: 40px;
+            }
+        }
+        & ul{
+            & li{
+                font-size: 16px;
+                font-weight: 700;
+                color: $white;
+                line-height: 36px;
+                & i{
+                    padding-right: 9px;
+                }
+            }
+        }
+        & .main-btn{
+            background: $white;
+            color: $black;
+            @media #{$md} {
+                margin-left: 0;
+                margin-top: 15px;
+            }
+            @media #{$xs} {
+                margin-left: 0;
+                margin-top: 15px;
+            }
+            &:hover{
+                background: $theme-color-2;
+                color: $white;
+            }
+        }
+    }
+}
+
+
+
+
+.infetech-cta-2-area{
+    background-image: url(../images/bg.jpg);
+    background-size:cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    @media #{$md} {
+        padding: 80px 0;
+    }
+    @media #{$xs} {
+        padding: 80px 0;
+    }
+    & .cta-btn{
+        text-align: right;
+        @media #{$md} {
+            text-align: left;
+            margin-top: 15px;
+        }
+        @media #{$xs} {
+            text-align: left;
+            margin-top: 15px;
+        }
+        & a{
+            background: $white;
+            color: $black;
+            &:hover{
+                background: $theme-color;
+                color: $white;
+            }
+        }
+    }
+    & .cta-content{
+        @media #{$xs} {
+            text-align: center;
+        }
+        & p{
+            color: $white;
+            font-size: 20px;
+            color: #e1d6ff;
+        }
+        & .title{
+            color: $white;
+            font-size: 36px;
+            margin-top: 17px;
+        }
+    }
+    & .cta-btn{
+        @media #{$xs} {
+            text-align: center;
+        }
+    }
+}
+
+
+.infetect-cta-area-home-2{
+    position: relative;
+    z-index: 10;
+    margin-bottom: -100px;
+    @media #{$md} {
+        margin-bottom: -50px;
+    }
+}
+
+
+.cta-home-box{
+    background-image: url(../images/cta-bg-2.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 75px 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    @media #{$lg} {
+        padding: 60px 50px;
+    }
+    @media #{$md} {
+        padding: 60px 50px;
+        flex-direction: column;
+        gap: 20px;
+        align-items: flex-start;
+    }
+    @media #{$xs} {
+        flex-direction: column;
+        gap: 20px;
+        align-items: flex-start;
+        padding: 20px 30px;
+    }
+    @media #{$sm} {
+        padding: 60px 50px;
+    }
+    &::before{
+        position: absolute;
+        content: '';
+        left: 0;
+        top: 0;
+        width: 10px;
+        height: 100%;
+        background: $theme-color;
+    }
+    & span{
+        font-size: 16px;
+        font-weight: 600;
+        color: $theme-color;
+    }
+    & .title{
+        font-size: 36px;
+        font-weight: 800;
+        color: $white;
+        margin-top: 5px;
+        @media #{$xs} {
+            font-size: 28px;
+        }
+    }
+}
+
+.infetech-map{
+    margin-bottom: -8px;
+    & iframe{
+        height: 490px;
+        width: 100%;
+        @media #{$md} {
+            height: 300px;
+        }
+        @media #{$xs} {
+            height: 300px;
+        }
+    }
+}

@@ -1,0 +1,58 @@
+
+
+
+/*===========================
+    18.PROMO BANNER css 
+===========================*/
+
+
+
+
+.infetech-promo-banner-area{
+    background-image: url(../images/promo-banner-bg.jpg);
+    padding: 168px 0 120px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-top: -60px;
+    @media #{$xs} {
+        padding: 115px 0 60px;
+    }
+    @media #{$md} {
+        padding: 115px 0 60px;
+    }
+    &.infetech-promo-banner-about{
+        padding-top: 110px;
+        @media #{$md} {
+            padding-top: 50px;
+        }
+        @media #{$xs} {
+            padding-top: 50px;
+        }
+    }
+}
+
+.promo-banner-item{
+    & .title{
+        color: $white;
+        font-size: 60px;
+        padding-bottom: 55px;
+        @media #{$lg} {
+            font-size: 48px;
+        }
+        @media #{$md} {
+            font-size: 36px;
+        }
+        @media #{$xs} {
+            font-size: 36px;
+        }
+    }
+    & a{
+        background: $white;
+        color: $black;
+        &:hover{
+            color: $white;
+            background: $theme-color-2;
+        }
+    }
+}

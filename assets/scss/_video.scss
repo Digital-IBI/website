@@ -1,0 +1,142 @@
+
+
+
+/*===========================
+    11.VIDEO css 
+===========================*/
+
+
+
+
+.infetech-video-area{
+    padding-top: 120px;
+    padding-bottom: 120px;
+    background-image: url(../images/video-bg.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 10;
+    overflow: hidden;
+    & .video-shape{
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -1;
+
+    }
+    &::before{
+        position: absolute;
+        content: '';
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        background: #1d1729;
+        opacity: 0.7;
+        z-index: -2;
+    }
+    & .video-content{
+        & .play-btn{
+            & a{
+                height: 60px;
+                width: 60px;
+                text-align: center;
+                line-height: 60px;
+                border-radius: 50%;
+                color: $white;
+                background: $theme-color;
+                position: relative;
+                &::before{
+                    position: absolute;
+                    content: '';
+                    left: 0;
+                    top: 0;
+                    height: 100%;
+                    width: 100%;
+                    border: 1px solid $white;
+                    border-radius: 50%;
+                    animation: play-popup 1.5s infinite;
+                }
+            }
+        }
+        & span{
+            font-size: 16px;
+            font-weight: 600;
+            color: $white;
+            display: inline-block;
+            padding-top: 43px;
+            padding-bottom: 16px;
+        }
+        & .title{
+            color: $white;
+            font-size: 60px;
+            @media #{$lg} {
+                font-size: 46px;
+            }
+            @media #{$md} {
+                font-size: 46px;
+                margin-bottom: 20px;
+            }
+            @media #{$xs} {
+                font-size: 26px;
+                margin-bottom: 20px;
+            }
+            @media #{$sm} {
+                font-size: 40px;
+                margin-bottom: 20px;
+            }
+        }
+    }
+}
+
+@keyframes play-popup {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.5);
+    opacity: 0;
+
+  }
+}
+
+
+.video-content-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items:flex-end;
+    row-gap: 12px;
+    @media #{$md} {
+        flex-direction: row;
+        column-gap: 30px;
+    }
+    @media #{$xs} {
+        flex-direction: column;
+        column-gap: 30px;
+        align-items: flex-start;
+    }
+    @media #{$sm} {
+        flex-direction: row;
+        column-gap: 30px;
+    }
+    & .video-content-box{
+        background: $theme-color;
+        display: inline-block;
+        padding: 50px;
+        & .title{
+            color: $white;
+            font-size: 40px;
+            margin-bottom: 4px;
+        }
+        & span{
+            font-size: 18px;
+            color: $white;
+        }
+        &.item-2{
+            background: $theme-color-2;
+        }
+    }
+}

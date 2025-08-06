@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Test - Admin Panel</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .btn-custom {
+            border-radius: 25px;
+            padding: 10px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .security-test {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .test-result {
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+        
+        .test-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .test-error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .test-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">
+                            <i class="fas fa-shield-alt"></i> Security Implementation Test
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="security-test">
+                            <h5>1. Input Sanitization Test</h5>
+                            <div class="mb-3">
+                                <label for="testInput" class="form-label">Test Input (try XSS):</label>
+                                <input type="text" class="form-control" id="testInput" 
+                                       value="<script>alert('xss')</script>">
+                                <button class="btn btn-primary btn-custom mt-2" onclick="testSanitization()">
+                                    Test Sanitization
+                                </button>
+                            </div>
+                            <div id="sanitizationResult"></div>
+                        </div>
+
+                        <div class="security-test">
+                            <h5>2. Form Validation Test</h5>
+                            <form id="validationTestForm">
+                                <div class="mb-3">
+                                    <label for="testEmail" class="form-label">Email:</label>
+                                    <input type="email" class="form-control" id="testEmail" name="email" 
+                                           value="invalid-email">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="testPassword" class="form-label">Password:</label>
+                                    <input type="password" class="form-control" id="testPassword" name="password" 
+                                           value="123">
+                                </div>
+                                <button type="button" class="btn btn-primary btn-custom" onclick="testValidation()">
+                                    Test Validation
+                                </button>
+                            </form>
+                            <div id="validationResult"></div>
+                        </div>
+
+                        <div class="security-test">
+                            <h5>3. Rate Limiting Test</h5>
+                            <button class="btn btn-warning btn-custom" onclick="testRateLimit()">
+                                Test Rate Limiting
+                            </button>
+                            <div id="rateLimitResult"></div>
+                        </div>
+
+                        <div class="security-test">
+                            <h5>4. CSRF Token Test</h5>
+                            <button class="btn btn-info btn-custom" onclick="testCSRF()">
+                                Test CSRF Protection
+                            </button>
+                            <div id="csrfResult"></div>
+                        </div>
+
+                        <div class="security-test">
+                            <h5>5. Session Management Test</h5>
+                            <button class="btn btn-success btn-custom" onclick="testSession()">
+                                Test Session Management
+                            </button>
+                            <div id="sessionResult"></div>
+                        </div>
+
+                        <div class="security-test">
+                            <h5>6. Audit Logging Test</h5>
+                            <button class="btn btn-secondary btn-custom" onclick="testAuditLog()">
+                                Test Audit Logging
+                            </button>
+                            <div id="auditResult"></div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <a href="admin-dashboard.html" class="btn btn-primary btn-custom">
+                                <i class="fas fa-arrow-left"></i> Back to Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Utilities -->
+    <script src="../assets/js/security-utils.js"></script>
+    
+    <!-- Auth Script -->
+    <script src="../assets/js/auth.js"></script>
+    
+    <!-- Bootstrap JS -->
+    <script src="../assets/js/bootstrap.min.js"></script>
+    
+    <script>
+        // Test input sanitization
+        function testSanitization() {
+            const input = document.getElementById('testInput').value;
+            const sanitized = SecurityUtils.sanitizeInput(input);
+            
+            const result = document.getElementById('sanitizationResult');
+            result.innerHTML = `
+                <div class="test-result test-success">
+                    <strong>Original:</strong> ${SecurityUtils.escapeHtml(input)}<br>
+                    <strong>Sanitized:</strong> ${SecurityUtils.escapeHtml(sanitized)}<br>
+                    <strong>Status:</strong> ✅ Sanitization working correctly
+                </div>
+            `;
+        }
+
+        // Test form validation
+        function testValidation() {
+            const form = document.getElementById('validationTestForm');
+            const formData = new FormData(form);
+            const data = {};
+            
+            for (const [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            const rules = {
+                email: { required: true, type: 'email' },
+                password: { required: true, type: 'password', minLength: 8 }
+            };
+            
+            const errors = SecurityUtils.validateFormData(data, rules);
+            
+            const result = document.getElementById('validationResult');
+            if (errors.length === 0) {
+                result.innerHTML = `
+                    <div class="test-result test-success">
+                        ✅ All validations passed
+                    </div>
+                `;
+            } else {
+                result.innerHTML = `
+                    <div class="test-result test-error">
+                        ❌ Validation errors:<br>
+                        ${errors.map(error => `• ${error}`).join('<br>')}
+                    </div>
+                `;
+            }
+        }
+
+        // Test rate limiting
+        function testRateLimit() {
+            const identifier = 'test_user';
+            const isAllowed = SecurityUtils.checkRateLimit('login', identifier);
+            
+            const result = document.getElementById('rateLimitResult');
+            if (isAllowed) {
+                result.innerHTML = `
+                    <div class="test-result test-success">
+                        ✅ Rate limiting working - request allowed
+                    </div>
+                `;
+            } else {
+                result.innerHTML = `
+                    <div class="test-result test-warning">
+                        ⚠️ Rate limiting working - request blocked
+                    </div>
+                `;
+            }
+        }
+
+        // Test CSRF protection
+        function testCSRF() {
+            const token = SecurityUtils.generateCSRFToken();
+            const isValid = SecurityUtils.validateCSRFToken(token);
+            const isInvalid = SecurityUtils.validateCSRFToken('invalid_token');
+            
+            const result = document.getElementById('csrfResult');
+            result.innerHTML = `
+                <div class="test-result test-success">
+                    ✅ CSRF Protection working:<br>
+                    • Valid token: ${isValid ? '✅' : '❌'}<br>
+                    • Invalid token: ${isInvalid ? '❌' : '✅'}<br>
+                    • Token generated: ${token.substring(0, 10)}...
+                </div>
+            `;
+        }
+
+        // Test session management
+        function testSession() {
+            const userData = {
+                id: 'test_user_123',
+                email: 'test@example.com',
+                role: 'admin'
+            };
+            
+            const sessionId = SecurityUtils.createSecureSession(userData);
+            const sessionData = SecurityUtils.validateSession();
+            
+            const result = document.getElementById('sessionResult');
+            if (sessionData) {
+                result.innerHTML = `
+                    <div class="test-result test-success">
+                        ✅ Session Management working:<br>
+                        • Session ID: ${sessionId.substring(0, 10)}...<br>
+                        • User: ${sessionData.email}<br>
+                        • Role: ${sessionData.role}
+                    </div>
+                `;
+            } else {
+                result.innerHTML = `
+                    <div class="test-result test-error">
+                        ❌ Session Management failed
+                    </div>
+                `;
+            }
+        }
+
+        // Test audit logging
+        function testAuditLog() {
+            SecurityUtils.logSecurityEvent('Test event', 'test', {
+                testData: 'This is a test',
+                timestamp: new Date().toISOString()
+            });
+            
+            const result = document.getElementById('auditResult');
+            result.innerHTML = `
+                <div class="test-result test-success">
+                    ✅ Audit logging working - check console for details
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html> 

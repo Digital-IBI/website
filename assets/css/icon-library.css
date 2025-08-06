@@ -1,0 +1,22 @@
+/*
+  Simple icon utility library (PNG-based)
+  Usage:
+    <span class="icon icon-automation"></span>
+  The base .icon class sets size; variant class sets background-image.
+*/
+
+.icon{
+    display:inline-block;
+    width:64px;
+    height:64px;
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+}
+
+.icon-automation{background-image:url('../images/icon/service-icon-1.png');}
+.icon-analytics{background-image:url('../images/icon/service-icon-2.png');}
+.icon-marketing{background-image:url('../images/icon/service-icon-3.png');}
+.icon-consulting{background-image:url('../images/icon/service-icon-4.png');}
+.icon-technology{background-image:url('../images/icon/icon-1.png');}
+.icon-growth{background-image:url('../images/icon/icon-2.png');}

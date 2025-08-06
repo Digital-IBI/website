@@ -1,0 +1,124 @@
+
+
+/*===========================
+    21.SERVING css 
+===========================*/
+
+
+
+
+
+
+
+
+.infetech-serving-area{
+    background-image: url(../images/serving-bg.jpg);
+    background-size:cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding-top: 113px;
+    padding-bottom: 180px;
+    & .section-title{
+        margin-bottom: 55px;
+    }
+}
+
+
+.single-serving-item{
+    background: $white;
+    padding: 40px 0;
+    margin: 0px 20px;
+    position: relative;
+    z-index: 10;
+    &::before{
+        position: absolute;
+        content: '';
+        right: 0;
+        top: 0;
+        height: 100%;
+        width: 0%;
+        background: #5f2dee;
+        z-index: -4;
+        transition: all linear 0.3s;
+        opacity: 0;
+    }
+    & .icon{
+        & svg{
+            transition: all linear 0.3s;
+        }
+    }
+    & .title{
+        margin-top: 25px;
+        font-size: 18px;
+        font-weight: 700;
+        transition: all linear 0.3s;
+    }
+    &:hover{
+        &::before{
+            opacity: 1;
+            width: 100%;
+        }
+        & .icon{
+            & svg{
+                fill: #fff;
+            }
+        }
+        & .title{
+            color: $white;
+        }
+    }
+}
+
+
+.serving-angle-shape-1{
+    transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    position: absolute;
+    top: 0;
+    left: -30px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    border-top: 130px solid #7746f1;
+    border-right: 80px solid transparent;
+    z-index: -2;
+}
+
+
+.serving-angle-shape-2{
+    transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    position: absolute;
+    top: 0;
+    left: -30px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    border-top: 250px solid #6730fd;
+    border-right: 150px solid transparent;
+    z-index: -3;
+}
+
+.single-serving-item{
+    overflow: hidden;
+    z-index: 10;
+    &:hover{
+        & .serving-angle-shape-1,
+        & .serving-angle-shape-2{
+            transition: all .3s ease;
+            -moz-transition: all .3s ease;
+            -webkit-transition: all .3s ease;
+            -o-transition: all .3s ease;
+            -webkit-transition-delay: .3s;
+            transition-delay: .3s;
+            opacity: 1;
+            left: 0;
+
+        }
+    }
+}
+

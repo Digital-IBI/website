@@ -1,0 +1,166 @@
+
+
+
+/*===========================
+    16.OFFER css 
+===========================*/
+
+
+
+.infetech-offer-area{
+    padding-top: 120px;
+    padding-bottom: 120px;
+    background-image: url(../images/offer-bg.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    @media #{$md} {
+        padding: 70px 0;
+    }
+    @media #{$xs} {
+        padding: 70px 0;
+    }
+    & .section-title{
+        margin-bottom: 30px;
+        padding-right: 70px;
+        & span{
+            color: $white;
+            &::before{
+                background: $white;
+            }
+        }
+        & .title{
+            color: $white;
+        }
+    }
+    & .offer-text{
+        padding-right: 30px;
+        & p{
+            font-size: 16px;
+            font-weight: 500;
+            color: #e1d6ff;
+            margin-bottom: 26px;
+        }
+    }
+    & .offer-list{
+        & ul{
+            & li{
+                color: $white;
+                font-size: 18px;
+                font-weight: 500;
+                margin-bottom: 15px;
+                & img{
+                    padding-right: 5px;
+                }
+            }
+        }
+    }
+}
+
+.infetech-offer-thumb{
+    position: relative;
+    padding-left: 70px;
+    @media #{$md} {
+        text-align: left !important;
+        margin-top: 20px;
+    }
+    @media #{$xs} {
+        text-align: left !important;
+        margin-top: 20px;
+    }
+    & .offer-icon{
+        height: 130px;
+        width: 130px;
+        text-align: center;
+        line-height: 130px;
+        background-image: -moz-linear-gradient( 0deg, rgb(184,130,252) 0%, rgb(95,45,238) 100%);
+        background-image: -webkit-linear-gradient( 0deg, rgb(184,130,252) 0%, rgb(95,45,238) 100%);
+        background-image: -ms-linear-gradient( 0deg, rgb(184,130,252) 0%, rgb(95,45,238) 100%);
+        position: absolute;
+        left: 0;
+        bottom: 20px;
+    }
+}
+
+.base {
+  
+  position: absolute;
+  left: 1085px;
+  top: 3287px;
+  width: 130px;
+  height: 128px;
+  z-index: 324;
+}
+
+
+
+
+.infetech-offer-category-area{
+    padding-top: 118px;
+    padding-bottom: 110px;
+    background-image: url(../images/offer-category-bg.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    & .section-title{
+        & span{
+            color: $theme-color;
+            &::before{
+                background: $theme-color;
+            }
+        }
+        & .title{
+            color: $white;
+        }
+    }
+    & .offer-content{
+        @media #{$md} {
+            margin-bottom: 30px;
+        }
+        @media #{$xs} {
+            margin-bottom: 30px;
+        }
+        & p{
+            font-size: 16px;
+            font-weight: 500;
+            color: #b0a9c0;
+            line-height: 30px;
+            margin: 28px 30px 48px 0;
+        }
+    }
+}
+
+
+.offer-category-item{
+    & .box{
+        margin-bottom: 30px;
+        & a{
+            display: flex;
+            align-items: center;
+            border: 1px solid #55515f;
+            padding-left: 40px;
+            padding-top: 28px;
+            padding-bottom: 28px;
+            font-size: 20px;
+            font-weight: 800;
+            color: $white;
+            text-transform: capitalize;
+            transition: all linear 0.3s;
+            & i{
+                font-size: 30px;
+                color: $theme-color;
+                margin-right: 20px;
+                transition: all linear 0.3s;
+            }
+        }
+        &:hover{
+            & a{
+                background: $theme-color-2;
+                border-color: $theme-color-2;
+                & i{
+                    color: $white;
+                }
+            }
+        }
+    }
+}

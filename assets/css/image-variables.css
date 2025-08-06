@@ -1,0 +1,92 @@
+/* Image Variables - Comprehensive Image Management System */
+:root {
+    /* Local Image Paths */
+    
+    /* Banner Images */
+    --banner-hero: url('assets/images/banner-hero-it-solutions.jpg');
+    --banner-secondary: url('assets/images/banner-secondary-services.jpg');
+    --banner-startup-promo: url('assets/images/banner-startup-promo.jpg');
+    --banner-enterprise-solutions: url('assets/images/banner-enterprise-solutions.jpg');
+    
+    /* Service Images */
+    --service-app-dev: url('assets/images/service-app-development.jpg');
+    --service-digital-marketing: url('assets/images/service-digital-marketing.jpg');
+    --service-startup-package: url('assets/images/service-startup-package.jpg');
+    --service-enterprise-package: url('assets/images/service-enterprise-package.jpg');
+    
+    /* Project Images */
+    --project-ecommerce: url('assets/images/project-ecommerce-platform.jpg');
+    
+    /* Team Images */
+    --team-john-doe: url('assets/images/team-member-john-doe.jpg');
+    
+    /* Ad Campaign Variants */
+    --banner-hero-variant-a: url('assets/images/banner-hero-variant-a.jpg');
+    --banner-hero-variant-b: url('assets/images/banner-hero-variant-b.jpg');
+    --banner-hero-variant-c: url('assets/images/banner-hero-variant-c.jpg');
+}
+
+/* Banner Usage Classes */
+.banner-hero {
+    background-image: var(--banner-hero);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.banner-secondary {
+    background-image: var(--banner-secondary);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+/* Ad Campaign Banner Classes */
+.banner-startup-promo {
+    background-image: var(--banner-startup-promo);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.banner-enterprise-solutions {
+    background-image: var(--banner-enterprise-solutions);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+/* Service Image Classes */
+.service-app-dev {
+    background-image: var(--service-app-dev);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.service-digital-marketing {
+    background-image: var(--service-digital-marketing);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+/* Dynamic Ad Image Classes */
+.banner-hero-dynamic {
+    background-image: var(--banner-hero);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    transition: background-image 0.3s ease;
+}
+
+/* Responsive Image Classes */
+@media (max-width: 768px) {
+    .banner-hero,
+    .banner-secondary,
+    .banner-startup-promo,
+    .banner-enterprise-solutions {
+        background-size: cover;
+        background-position: center center;
+    }
+} 

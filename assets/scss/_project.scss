@@ -1,0 +1,709 @@
+
+
+
+/*===========================
+    8.PROJECT css 
+===========================*/
+
+
+
+.infetech-project-area{
+    border-bottom: 1px solid #e4e0ee;
+    padding-bottom: 160px;
+    margin-bottom: 80px;
+    overflow: hidden;
+    @media #{$md} {
+        padding-top: 80px;
+        padding-bottom: 80px;
+    }
+    @media #{$xs} {
+        padding-top: 80px;
+        padding-bottom: 80px;
+    }
+    & .section-title{
+        & p{
+            color: #6c6a72;
+        }
+    }
+    & .container-fluid{
+        @media #{$laptop} {
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+        @media #{$lg} {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        @media #{$md} {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        @media #{$xs} {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+    &.infetech-project-area-5{
+        margin-bottom: 0;
+        border-bottom: 0;
+    }
+}
+
+
+
+.single-project-item{
+    position: relative;
+    overflow: hidden;
+    & img{
+        width: 100%;
+        transition: all linear 0.3s;
+    }
+    & .single-project-overlay{
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;    
+        padding-left: 40px;
+        padding-bottom: 32px;
+        z-index: 10;
+        &::before{
+            position: absolute;
+            content: '';
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            background-image: -moz-linear-gradient( 90deg, rgb(184,130,252) 0%, rgba(184,130,252,0) 65%);
+            background-image: -webkit-linear-gradient( 90deg, rgb(184,130,252) 0%, rgba(184,130,252,0) 65%);
+            background-image: -ms-linear-gradient( 90deg, rgb(184,130,252) 0%, rgba(184,130,252,0) 65%);  
+            z-index: -1;
+            opacity: 0;
+            transition: all linear 0.3s;
+        }
+        & .title{
+            color: $white;
+            font-size: 24px;
+            margin-bottom: 7px;
+            @media #{$laptop} {
+                font-size: 20px;
+            }
+        } 
+        & span{
+            color: #000;
+            font-weight: 800;
+            font-size: 14px;
+            color: $theme-color;
+            text-transform: uppercase;
+            transition: all linear 0.3s;
+        }
+        & a{
+            color: $white;
+            border: 2px solid $white;
+            border-radius: 50%;
+            height: 50px;
+            width: 50px;
+            text-align: center;
+            line-height: 50px;
+            display: inline-block;
+            position: absolute;
+            right: 0px;
+            bottom: 40px;
+            z-index: 20;
+            opacity: 0;
+            transition: all linear 0.3s;
+            @media #{$laptop-mid} {
+                position: static;
+                opacity: 1;
+                margin-top: 15px;
+            }
+            @media #{$lg} {
+                position: static;
+                opacity: 1;
+                margin-top: 15px;
+            }
+            @media #{$md} {
+                position: static;
+                opacity: 1;
+                margin-top: 15px;
+            }
+            @media #{$xs} {
+                position: static;
+                opacity: 1;
+                margin-top: 15px;
+            }
+            &:hover{
+                background: $white;
+                color: $theme-color;
+            }
+        }
+    }
+    &:hover{
+        & .single-project-overlay{
+            &::before{
+                opacity: 1;
+            }
+            & span{
+                color: $white;
+            }
+            & a{
+                opacity: 1;
+                right: 40px;
+            }
+        }
+        & img{
+            transform: scale(1.1);
+        }
+    }
+}
+
+.infetech-project-slide-2,
+.infetech-project-slide{
+    & .col-lg-3{
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    & .slick-dots{
+        position: absolute;
+        left: 50%;
+        bottom: -48px;
+        transform: translateX(-50%);
+        width: auto;
+        & li{
+            display: inline-block;
+            margin: 0 5px;
+            & button{
+                border: 0;
+                background: #bbb9be;
+                height: 4px;
+                width: 16px;
+                font-size: 0;
+            }
+            &.slick-active{
+                & button{
+                    background: $theme-color-2;
+                }
+            }
+        }
+    }
+}
+
+
+
+.infetech-sponser-area{
+    padding-bottom: 80px;
+    &.infetech-sponser-area-3{
+        @media #{$md} {
+            padding-bottom: 40px;
+        }
+        @media #{$xs} {
+            padding-bottom: 40px;
+        }
+    }
+    &.infetech-sponser-services-area{
+        border-top: 1px solid #e4e0ee;
+        padding-top: 80px;
+    }
+    & .infetech-sponser-item{
+        text-align: center;
+        padding: 35px 0;
+        & img{
+            display: inline-block;
+            opacity: 0.6;
+        }
+        &:hover{
+            background: #f4f2f9;
+            & img{
+                opacity: 1;
+            }
+        }
+    }
+    &.infetech-sponser-area-2{
+        border-top: 1px solid #e4e0ee;
+        padding-top: 90px;
+        margin-top: 120px;
+    }
+    &.infetech-sponser-area-4{
+        border-bottom: 1px solid #e4e0ee;
+    }
+    &.infetech-sponser-area-5{
+        background-image: url(../images/sponser-bg.jpg);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        padding: 90px 0;
+        & .infetech-sponser-item{
+            transition: all linear 0.3s;
+            &:hover{
+                background: #7545fc;
+                & img{
+                    opacity: 1;
+                }
+            }
+            & img{
+                opacity: 0.6;
+                transition: all linear 0.3s;
+            }
+        }
+    }
+    &.infetech-sponser-about-area{
+        padding-top: 90px;
+        padding-bottom: 90px;
+        border-bottom: 1px solid #e4e0ee;
+    }
+}
+
+
+
+
+.infetech-project-offer-area-2{
+    & .single-project-item-2{
+        position: relative;
+        padding-right: 70px;
+        z-index: 10;
+        padding-bottom: 40px;
+        @media #{$xs} {
+            padding-right: 0;
+            margin-bottom: 30px;
+        }
+        & .thumb{
+            overflow: hidden;
+            & img{
+                width: 100%;
+                transition: all linear 0.3s;
+            }
+        }
+        &:hover{
+            & .thumb{
+                & img{
+                    transform: scale(1.1);
+                }
+            }
+        }
+        & .project-content{
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 370px;
+            background: $white;
+            box-shadow: 0px 10px 60px 0px rgba(0, 0, 0, 0.07);
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            padding: 35px 40px 35px 50px;
+            @media #{$xs} {
+                position:static;
+                width: 100%;
+                justify-content: flex-start;
+                flex-direction: column;
+                align-items:flex-start;
+                padding: 20px;
+            }
+
+            @media #{$sm} {
+                position:static;
+                width: 100%;
+                justify-content: space-between;
+                flex-direction: row;
+                align-items:flex-start;
+            }
+            & .text{
+                & a{
+                    font-size: 20px;
+                    font-weight: 800;
+                    color: $black;
+                    line-height: 26px;
+                }
+            }
+            & .icon{
+                margin-left: 30px;
+                @media #{$xs} {
+                    margin-left: 0;
+                    margin-top: 20px;
+                }
+                & a{
+                    height: 50px;
+                    width: 50px;
+                    text-align: center;
+                    line-height: 52px;
+                    border-radius: 50%;
+                    color: $white;
+                    background: $theme-color;
+                }
+            }
+
+        }
+    }
+}
+
+
+
+
+.infetech-project-slider-area-2{
+    padding-top: 120px;
+    padding-bottom: 160px;
+    position: relative;
+    z-index: 10;
+    overflow: hidden;
+    &::before{
+        position: absolute;
+        content: '';
+        left: 0;
+        top: 0;
+        height: 450px;
+        width: 100%;
+        background: #f4f2f9;
+        z-index: -1;
+    }
+    & .single-project-slider-item{
+        margin-left: 15px;
+        margin-right: 15px;
+        & .thumb{
+            overflow: hidden;
+            & img{
+                transition: all linear 0.3s;
+                width: 100%;
+            }
+        }
+        & .content{
+            padding-top: 25px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid #e4e0ee;
+            position: relative;
+            & .title{
+                & a{
+                    font-size: 24px;
+                    color: $black;
+                }
+            }
+            & span{
+                color: $theme-color;
+                font-weight: 800;
+                margin-top: 2px;
+            }
+            & .link{
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                height: 48px;
+                width: 50px;
+                text-align: center;
+                line-height: 48px;
+                background: #e4e0ee;
+                font-size: 14px;
+                color: #6c6a72;
+            }
+        }
+        &:hover{
+            & .thumb{
+                & img{
+                    transform: scale(1.1);
+                }
+            }
+            & .content{
+                & .link{
+                    background: $theme-color-2;
+                    color: $white;
+                }
+            }
+        }
+    }
+}
+
+.project-slider-active{
+    & .slick-dots{
+        position: absolute;
+        left: 50%;
+        bottom: -47px;
+        transform: translateX(-50%);
+        text-align: center;
+        & li{
+            display: inline-block;
+            margin: 0 5px;
+            & button{
+                border: 0;
+                background: #bbb9be;
+                height: 4px;
+                width: 16px;
+                font-size: 0;
+            }
+            &.slick-active{
+                & button{
+                    background: $theme-color-2;
+                }
+            }
+        }
+    }
+}
+
+
+.infetech-project-3-area{ 
+    padding-top: 112px;
+    padding-bottom: 155px;
+    position: relative;
+    z-index: 10;
+    @media #{$xs} {
+        padding-top: 60px;
+        padding-bottom: 90px;
+    }
+    &::before{
+        position: absolute;
+        content: '';
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 425px;
+        background: $black;
+        z-index: -1;
+    }
+    & .section-title{
+        text-align: center;
+        margin-bottom: 44px;
+        & .title{
+            color: $white;
+        }
+    }
+    &.services{
+        &::before{
+            display: none;
+        }
+        & .section-title{
+            & .title{
+                color: $black;
+            }
+        }
+    }
+}
+
+
+
+.infetech-project-4-area{
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+    @media #{$md} {
+        padding-top: 50px;
+        padding-bottom: 0px;
+    }
+    @media #{$xs} {
+        padding-top: 50px;
+        padding-bottom: 0px;
+    }
+    &::before{
+        position: absolute;
+        content: '';
+        left: 0;
+        top: 0;
+        height: 410px;
+        width: 100%;
+        background: $theme-color-2;
+        z-index: -1;
+    }
+    & .section-title{
+        text-align: center;
+        & span{
+            color: $white;
+            &::before{
+                background: $white;
+            }
+        }
+        & .title{
+            color: $white;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+.infetech-projects-grid-area{
+    @media #{$md} {
+        padding-top: 70px;
+        padding-bottom: 40px;
+    }
+    & .single-project-item{
+        margin-bottom: 30px;
+    }
+}
+
+.infetech-projects-details-area{
+    @media #{$md} {
+        padding: 70px 0 50px;
+    }
+    @media #{$xs} {
+        padding: 70px 0 50px;
+    }
+}
+
+
+.projects-details-list-box{
+    background: #f4f2f9;
+    padding: 50px 50px 88px;
+    @media #{$lg} {
+        padding: 20px 20px 30px;
+    }
+    @media #{$md} {
+        padding: 20px 20px 30px;
+    }
+    @media #{$xs} {
+        padding: 20px 20px 30px;
+    }
+
+    & .projects-list-item{
+        border-bottom: 1px solid #fff;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        & span{
+            font-size: 16px;
+            font-weight: 500;
+            color: #6c6a72;
+        }
+        & .title{
+            font-size: 16px;
+            font-weight: 700;
+            color: $theme-color-2;
+            text-transform: capitalize;
+            padding-top: 6px;
+        }
+    }
+    & .social{
+        & ul{
+            & li{
+                display: inline-block;
+                & a{
+                    height: 40px;
+                    width: 40px;
+                    text-align: center;
+                    line-height: 40px;
+                    font-size: 14px;
+                    color: $black;
+                    border-radius: 50%;
+                    background: $white;
+                    margin-right: 10px;
+                    &:hover{
+                        background: $theme-color-2;
+                        color: $white;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+.projects-details-content{
+    padding-top: 40px;
+    & .text{
+        & .title{
+            font-size: 40px;
+            text-transform: capitalize;
+            margin-bottom: 16px;
+            @media #{$xs} {
+                font-size: 30px;
+            }
+        }
+        & p{
+            font-weight: 500;
+            color: #6c6a72;
+            line-height: 30px;
+        }
+    }
+    & .small-text{
+        margin-top: 40px;
+        & .title{
+            font-size: 24px;
+            text-transform: capitalize;
+            margin-bottom: 16px;
+        }
+        & p{
+            font-weight: 500;
+            color: #6c6a72;
+            line-height: 30px;
+        }
+        & ul{
+            margin-top: 25px;
+            & li{
+                font-size: 18px;
+                font-weight: 600;
+                color: $black;
+                line-height: 38px;
+                & img{
+                    padding-right: 8px;
+                }
+            }
+        }
+    }
+    & .projects-details-page-changer{
+        border-top: 1px solid #e4e0ee;
+        border-bottom: 1px solid #e4e0ee;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        @media #{$md} {
+            margin-top: 50px;
+        }
+        @media #{$xs} {
+            margin-top: 50px;
+        }
+        & ul{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            & li{
+                display: inline-block;
+                & a{
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: #6c6a72;
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                }
+                & .icon{
+                    & i{
+                        height: 50px;
+                        width: 50px;
+                        line-height: 50px;
+                        text-align: center;
+                        background: #f4f2f9;
+                        border-radius: 50%;
+                        color: $black;
+                        transition: all linear 0.3s;
+                    }
+                }
+                &:hover{
+                    & .icon{
+                        & i{
+                            background: $theme-color-2;
+                            color: $white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.projects-details-thumb{
+    & img{
+        width: 100%;
+    }
+}
+
+.infetech-project-details-list-area{
+    @media #{$md} {
+        padding-bottom: 40px;
+    }
+    @media #{$xs} {
+        padding-bottom: 40px;
+    }
+    & .single-project-item{
+        margin-bottom: 30px;
+    }
+}

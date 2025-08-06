@@ -1,0 +1,407 @@
+
+
+
+/*===========================
+    5.SERVICE css 
+===========================*/
+
+
+
+.infetech-service-area{
+    position: relative;
+    z-index: 25;
+    @media #{$md} {
+        padding-bottom: 60px;
+    }
+    &.infetech-service-page-area{
+        margin-bottom: 0;
+        padding-top: 120px;
+        padding-bottom: 185px;
+        @media #{$md} {
+            padding-top: 80px;
+            padding-bottom: 70px;
+        }
+        @media #{$xs} {
+            padding-top: 80px;
+            padding-bottom: 70px;
+        }
+        & .single-infetech-serice-item{
+            & .content{
+                box-shadow: 0px 10px 60px 0px rgba(0, 0, 0, 0.15);
+            }
+        }
+    }
+}
+
+
+
+
+.single-infetech-serice-item{
+    margin-bottom: -86px;
+        @media #{$md} {
+            margin-bottom: 0;
+        }
+        @media #{$xs} {
+            margin-bottom: 30px;
+        }
+    & .thumb{
+        overflow: hidden;
+        & img{
+            transition: all linear 0.3s;
+            width: 100%;
+        }
+    }
+    &:hover{
+        
+        & .thumb{
+            
+            & img{
+                transform: scale(1.1);
+            }
+        }
+    }
+    & .content{
+        margin-left: 20px;
+        margin-right: 20px;
+        top: -20px;
+        position: relative;
+        z-index: 10;
+        background: $white;
+        text-align: center;
+        padding: 21px 30px;
+        & .title{
+            font-size: 20px;
+            line-height: 22px;
+            font-weight: 800;
+            @media #{$lg} {
+                font-size: 18px;
+            }
+            & a{
+                color: $heading-color;
+                &:hover{
+                    color: $theme-color-2;
+                }
+            }
+        }
+        & .icon{
+            background: $theme-color-2;
+            height: 70px;
+            width: 70px;
+            text-align: center;
+            line-height: 70px;
+            position: absolute;
+            right: 0;
+            bottom: 100%;
+
+        }
+    }
+}
+
+
+
+.infetech-service-3-area{
+    padding-bottom: 120px;
+    margin-top: -30px;
+    position: relative;
+    z-index: 10;
+    @media #{$md} {
+        padding-bottom: 60px;
+    }
+    @media #{$xs} {
+        padding-bottom: 60px;
+    }
+}
+
+.single-service-3-item{
+    box-shadow: 0px 10px 60px 0px rgba(0, 0, 0, 0.1);
+    padding: 40px 116px 40px 40px; 
+    background-image: url(../images/service-bg.jpg);
+    background-size: cover;
+    background-position:center;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 10;
+    transition: all linear 0.3s;
+    @media #{$lg} {
+        padding: 40px 70px 40px 40px;
+    }
+    @media #{$md} {
+        padding: 40px 70px 40px 40px;
+        margin-bottom: 10px;
+    }
+    @media #{$xs} {
+        padding: 40px 70px 40px 40px;
+        margin-bottom: 10px;
+    }
+    & .bg{
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        background: $white;
+        z-index: -1;
+        transition: all linear 0.3s;
+    }
+    &::before{
+        position: absolute;
+        content: '';
+        top: 0;
+        right: 0;
+        height: 20px;
+        width: 20px;
+        background: $theme-color;
+    }
+    &::after{
+        position: absolute;
+        content: '01';
+        bottom: 14px;
+        right: 30px;
+        font-weight: 300;
+        font-size: 60px;
+        color: #e4e0ee;
+        transition: all linear 0.3s;
+    }
+    & .title{
+        font-size: 24px;
+        text-transform: uppercase;
+        margin-bottom: 13px;
+        transition: all linear 0.3s;
+        @media #{$lg} {
+            font-size: 20px;
+        }
+    }
+    & p{
+        font-weight: 500;
+        line-height: 30px;
+        color: #6c6a72;
+        transition: all linear 0.3s;
+    }
+    &.item-2{
+        &::after{
+            content: '02';
+        }
+    }
+    &.item-3{
+        &::after{
+            content: '03';
+        }
+    }
+    &:hover{
+        box-shadow: none;
+        transform: translateY(-10px);
+        & .bg{
+            opacity: 0;
+        }
+        & .title{
+            color: $white;
+        }
+        & p{
+            color: $white;
+        }
+        &::after{
+            color: #7547f8;
+        }
+    }
+}
+
+.infetech-service-slide-3-area{
+    padding-top: 70px;
+    padding-bottom: 70px;
+    @media #{$xs} {
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+    & .container-fluid{
+        padding-left: 60px;
+        padding-right: 60px;
+        @media #{$xs} {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+    }
+    & .single-service-3-item{
+        margin-left: 100px;
+        background-image: url(../images/service-line.png);
+        background-position: right bottom;
+        background-repeat: no-repeat;
+        background-size: auto;
+        box-shadow: 0px 10px 60px 0px rgba(0, 0, 0, 0.07);
+        transform: translate(0);
+        padding: 50px 50px 50px 140px;
+        position: relative;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        @media #{$xs} {
+            padding: 30px;
+            margin-left: 0;
+        }
+        & .bg{
+            display: none;
+        }
+        & .thumb{
+            position: absolute;
+            left: -100px;
+            top: 50%;
+            transform: translateY(-50%);
+            @media #{$xs} {
+                position:static;
+                left: 0;
+                transform: translateY(0px);
+                display: inline-block;
+                margin-top: 20px;
+            }
+            & span{
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                height: 96px;
+                width: 96px;
+                text-align: center;
+                line-height: 80px;
+                font-size: 30px;
+                color: $white;
+                font-weight: 800;
+                text-transform: uppercase;
+                background: $theme-color-2;
+                border: 10px solid #fff;
+                border-radius: 50%;
+            }
+        }
+        &::after{
+            display: none;
+        }
+        & .title{
+            color: $black;
+        }
+        & p{
+            color: #6c6a72;
+        }
+    }
+}
+
+
+
+.infetech-sponser-slide-3{
+    & .col-lg-4{
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+}
+
+
+.infetech-service-area-5{
+
+}
+
+.single-service-5-item{
+    position: relative;
+    margin: 0px 2px;
+    overflow: hidden; 
+    @media #{$md} {
+        margin-bottom: 4px;
+    } 
+    @media #{$xs} {
+        margin-bottom: 4px;
+    }
+    & img{
+        width: 100%;
+        transition: all linear 0.3s;
+    }
+    &:hover{
+        & img{
+            transform: scale(1.1);
+        }
+    }
+    & .single-service-overlay{
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 40px;
+        & span{
+            display: inline-block;
+            height: 90px;
+            width: 90px;
+            text-align: center;
+            line-height: 90px;
+            background: #000;
+            background-image: -moz-linear-gradient( 0deg, rgb(95,45,238) 0%, rgb(184,130,252) 100%);
+            background-image: -webkit-linear-gradient( 0deg, rgb(95,45,238) 0%, rgb(184,130,252) 100%);
+            background-image: -ms-linear-gradient( 0deg, rgb(95,45,238) 0%, rgb(184,130,252) 100%);
+            box-shadow: 0px 5px 30px 0px rgba(0, 0, 0, 0.1);
+            color: $black;
+            position: relative;
+            z-index: 10;
+            font-size: 20px;
+            font-weight:800;
+            border-radius: 50%;
+            @media #{$xs} {
+                height: 70px;
+                width: 70px;
+                line-height: 70px;
+            }
+            &::before{
+                position: absolute;
+                content: '';
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%,-50%);
+                height: 75px;
+                width: 75px;
+                background: $white;
+                border-radius: 50%;
+                z-index: -1;
+                @media #{$xs} {
+                    height: 60px;
+                    width: 60px;
+                }
+            }
+            &::after{
+                position: absolute;
+                content: '';
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                height: 110px;
+                width: 110px;
+                border-radius: 50%;
+                border: 1px solid #fff;
+                opacity: 0.1;
+                @media #{$xs} {
+                    height: 75px;
+                    width: 75px;
+                }
+            }
+        }
+        & .title{
+            color: $white;
+            font-size: 24px;
+            margin-top: 45px;
+            margin-bottom: 15px;
+            @media #{$lg} {
+                margin-top: 20px;
+            }
+            @media #{$md} {
+                margin-top: 15px;
+            }
+            @media #{$xs} {
+                margin-top: 15px;
+            }
+        }
+        & p{
+            font-size: 16px;
+            font-weight: 500;
+            color: $white;
+            opacity: 0.7;
+            line-height: 30px;
+        }
+    }
+}
+

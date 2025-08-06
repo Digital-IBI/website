@@ -1,0 +1,345 @@
+/**
+ * Empty States and Data Skeletons CSS
+ * Provides consistent empty states, loading skeletons, and data placeholders
+ */
+
+/* Empty State Container */
+.empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    margin: 2rem 0;
+}
+
+.empty-state-icon {
+    font-size: 4rem;
+    color: #dee2e6;
+    margin-bottom: 1rem;
+}
+
+.empty-state-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state-description {
+    color: #6c757d;
+    margin-bottom: 2rem;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.empty-state-action {
+    margin-top: 1rem;
+}
+
+/* Data Skeleton Loading */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+    border-radius: 4px;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.skeleton-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.skeleton-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.skeleton-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 1rem;
+}
+
+.skeleton-title {
+    height: 20px;
+    width: 60%;
+    margin-bottom: 0.5rem;
+}
+
+.skeleton-subtitle {
+    height: 16px;
+    width: 40%;
+}
+
+.skeleton-content {
+    margin-top: 1rem;
+}
+
+.skeleton-line {
+    height: 16px;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+}
+
+.skeleton-line:last-child {
+    width: 70%;
+}
+
+/* Table Skeleton */
+.skeleton-table {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.skeleton-table-header {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.skeleton-table-row {
+    padding: 1rem;
+    border-bottom: 1px solid #f1f3f4;
+    display: flex;
+    align-items: center;
+}
+
+.skeleton-table-row:last-child {
+    border-bottom: none;
+}
+
+.skeleton-table-cell {
+    flex: 1;
+    height: 16px;
+    margin-right: 1rem;
+}
+
+.skeleton-table-cell:last-child {
+    margin-right: 0;
+    width: 100px;
+}
+
+/* Stats Card Skeleton */
+.skeleton-stats-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.skeleton-stats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.skeleton-stats-title {
+    height: 20px;
+    width: 40%;
+    background: rgba(255,255,255,0.3);
+    border-radius: 4px;
+}
+
+.skeleton-stats-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+}
+
+.skeleton-stats-value {
+    height: 32px;
+    width: 60%;
+    background: rgba(255,255,255,0.5);
+    border-radius: 4px;
+}
+
+/* Image Grid Skeleton */
+.skeleton-image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.skeleton-image-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.skeleton-image {
+    width: 100%;
+    height: 150px;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.skeleton-image-title {
+    height: 16px;
+    width: 80%;
+    margin-bottom: 0.5rem;
+}
+
+.skeleton-image-meta {
+    height: 12px;
+    width: 60%;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-container {
+    text-align: center;
+    padding: 3rem 2rem;
+}
+
+.loading-text {
+    margin-top: 1rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+/* Empty State Variations */
+.empty-state-leads {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.empty-state-leads .empty-state-icon {
+    color: rgba(255,255,255,0.7);
+}
+
+.empty-state-leads .empty-state-title {
+    color: white;
+}
+
+.empty-state-leads .empty-state-description {
+    color: rgba(255,255,255,0.8);
+}
+
+.empty-state-images {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+}
+
+.empty-state-images .empty-state-icon {
+    color: rgba(255,255,255,0.7);
+}
+
+.empty-state-images .empty-state-title {
+    color: white;
+}
+
+.empty-state-images .empty-state-description {
+    color: rgba(255,255,255,0.8);
+}
+
+.empty-state-campaigns {
+    background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+    color: white;
+}
+
+.empty-state-campaigns .empty-state-icon {
+    color: rgba(255,255,255,0.7);
+}
+
+.empty-state-campaigns .empty-state-title {
+    color: white;
+}
+
+.empty-state-campaigns .empty-state-description {
+    color: rgba(255,255,255,0.8);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .empty-state {
+        padding: 2rem 1rem;
+        margin: 1rem 0;
+    }
+    
+    .empty-state-icon {
+        font-size: 3rem;
+    }
+    
+    .empty-state-title {
+        font-size: 1.25rem;
+    }
+    
+    .skeleton-image-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 0.5rem;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .empty-state {
+        background: #2d3748;
+        color: #e2e8f0;
+    }
+    
+    .empty-state-title {
+        color: #f7fafc;
+    }
+    
+    .empty-state-description {
+        color: #a0aec0;
+    }
+    
+    .skeleton {
+        background: linear-gradient(90deg, #4a5568 25%, #2d3748 50%, #4a5568 75%);
+    }
+    
+    .skeleton-card {
+        background: #2d3748;
+    }
+    
+    .skeleton-table {
+        background: #2d3748;
+    }
+    
+    .skeleton-table-header {
+        background: #4a5568;
+    }
+    
+    .skeleton-image-card {
+        background: #2d3748;
+    }
+} 

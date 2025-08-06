@@ -1,0 +1,489 @@
+
+
+
+/*===========================
+    4.ABOUT css 
+===========================*/
+
+
+.infetech-about-area{
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 20;
+    overflow: hidden;
+    margin-bottom: -70px;
+    & .infetech-about-thumb{
+        position: relative;
+        & .thumb{
+            position: relative;
+            top: -195px;
+            left: 200px;
+            @media #{$lg} {
+                left: 50px;
+            }
+            @media #{$md} {
+                position: absolute;
+                top: 200px;
+                left: 280px;
+            }
+            @media #{$xs} {
+                display: none;
+            }
+
+        }
+        & .about-logo{
+            position: absolute;
+            top: 0;
+            right: -63px;
+            @media #{$lg} {
+                display: none;
+            }
+            @media #{$md} {
+                display: none;
+            }
+            @media #{$xs} {
+                display: none;
+            }
+        }
+        & .about-box{
+            position: absolute;
+            top: 240px;
+            left: 340px;
+            background: $theme-color;
+            padding: 24px 40px;
+            @media #{$lg} {
+                left: 250px;
+            }
+            @media #{$md} {
+                top: 140px;
+            }
+            @media #{$xs} {
+                position: static;
+            }
+            @media #{$sm} {
+                position: absolute;
+            }
+            & .title{
+                font-size: 36px;
+                font-weight: 700;
+                color: #fff;
+                display: flex;
+                align-items: center;
+            }
+            & span{
+                font-size: 16px;
+                color: #fff;
+                font-weight: 500;
+                text-transform: capitalize;
+            }
+        }
+    }
+    &.infetech-about-service-area{
+        padding-bottom: 70px;
+        @media #{$md} {
+            padding-top: 70px;
+        }
+        @media #{$xs} {
+            padding-top: 70px;
+        }
+        & .infetech-about-content{
+            & p{
+                font-size: 24px;
+                font-weight: 400;
+                color: #6c6a72;
+                line-height: 40px;
+            }
+            & .icon{
+                height: 125px;
+                width: 125px;
+                text-align: center;
+                line-height: 125px;
+                background: #000;
+                border-radius: 50%;
+                background-image: -moz-linear-gradient( 0deg, rgb(95,45,238) 0%, rgb(184,130,252) 100%);
+                background-image: -webkit-linear-gradient( 0deg, rgb(95,45,238) 0%, rgb(184,130,252) 100%);
+                background-image: -ms-linear-gradient( 0deg, rgb(95,45,238) 0%, rgb(184,130,252) 100%);
+                box-shadow: 0px 5px 30px 0px rgba(0, 0, 0, 0.1);
+                position: relative;
+                z-index: 10;
+                margin-bottom: 33px;
+                &::before{
+                    position: absolute;
+                    content: '';
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    border-radius: 50%;
+                    background: $white;
+                    z-index: -1;
+                    height: 105px;
+                    width: 105px;
+                }
+            }
+            & ul{
+                & li{
+                    & img{
+                        margin-right: 8px;
+                    }
+                }
+            }
+        }
+        & .infetech-about-thumb{
+            position: relative;
+            z-index: 10;
+            margin-right: -100px;
+            @media #{$lg} {
+                margin-right: -50px;
+            }
+            @media #{$md} {
+                margin-right: 0px;
+            }
+            @media #{$xs} {
+                margin-right: 0px;
+            }
+            & img{
+                &.main-thumb{
+                    margin-left: -60px;
+                    @media #{$xs} {
+                        margin-left: 0;
+                    }
+                }
+            }
+            & .item-1{
+                position: absolute;
+                left: -60px;
+                top: 0;
+                z-index: -1;
+            }
+            & .item-2{
+                position: absolute;
+                right: 0px;
+                bottom: -50px;
+                z-index: -1;
+            }
+        }
+    }
+}
+
+
+
+.infetech-about-content{
+    padding-left: 70px;
+    @media #{$lg} {
+        padding-left: 0;
+    }
+    @media #{$md} {
+        padding-left: 0;
+        margin-top: 40px;
+    }
+    @media #{$xs} {
+        padding-left: 0;
+        margin-top: 20px;
+    }
+    & span{
+        font-size: 16px;
+        color: $theme-color-2;
+        padding-left: 28px;
+        position: relative;
+        font-weight: 600;
+        &::before{
+            position: absolute;
+            content: '';
+            left: 0;
+            bottom: 8px;
+            height: 2px;
+            width: 16px;
+            background: $theme-color-2;
+        }
+    }
+    & > .title{
+        font-size: 45px;
+        font-weight: 800;
+        line-height: 55px;
+        @media #{$xs} {
+            font-size: 26px;
+            line-height: 36px;
+        }
+        @media #{$sm} {
+            font-size: 45px;
+            line-height: 55px;
+        }
+    }
+    & p{
+        line-height: 30px;
+        font-weight: 500;
+        margin-top: 26px;
+        margin-bottom: 40px;
+    }
+    & .about-card{
+        display: flex;
+        gap: 20px;
+        @media #{$xs} {
+            margin-bottom: 30px;
+        }
+        & .icon{
+            padding-left: 20px;
+            padding-top: 10px;
+            position: relative;
+            z-index: 10;
+            min-width: 85px;
+            &::before{
+                position: absolute;
+                content: '';
+                left: 0;
+                top: 0;
+                height: 54px;
+                width: 54px;
+                background: #f8f2ff;
+                border-radius: 50%;
+                z-index: -1;
+            }
+        }
+        & .content{
+            & .title{
+                font-size: 20px;
+                font-weight: 800;
+                color: #000;
+                line-height: 26px;
+                margin-top: 16px;
+            }
+        }
+    }
+    & ul{
+        margin-top: 38px;
+        margin-bottom: 38px;
+        & li{
+            font-size: 16px;
+            font-weight: 700;
+            color: #000;
+            line-height: 38px;
+            & i{
+                color: $theme-color;
+                padding-right: 9px;
+            }
+        }
+    }
+    & > a{
+        border: 1px solid $theme-color-2;
+    }
+}
+
+
+
+.infetech-about-3-area{
+    padding-bottom: 120px;
+    overflow: hidden;
+    @media #{$md} {
+        padding-bottom: 90px;
+    }
+    @media #{$xs} {
+        padding-bottom: 90px;
+    }
+    & .section-title{
+        & p{
+            font-weight: 500;
+            color: #6c6a72;
+            line-height: 30px;
+            margin-top: 30px;
+        }
+    }
+    & .about-3-thumb{
+        position: relative;
+        z-index: 10;
+        & .about-ring{
+            margin-top: 60px;
+            margin-left: -235px;
+            z-index: -5;
+            position: relative;
+        }
+        & .about-thumb-3{
+            position: absolute;
+            left: 40px;
+            top: 0;
+            z-index: 1;
+            @media #{$xs} {
+                left: 0;
+            }
+        }
+        & .about-thumb-1{
+            position: absolute;
+            left: -190px;
+            top: 310px;
+            z-index: 2;
+            @media #{$lg} {
+                display: none;
+            }
+            @media #{$md} {
+                display: none;
+            }
+            @media #{$xs} {
+                display: none;
+            }
+        }
+        & .about-thumb-2{
+            position: absolute;
+            left: 250px;
+            top: 390px;
+            z-index: 2;
+            @media #{$lg} {
+                display: none;
+            }
+            @media #{$md} {
+                display: none;
+            }
+            @media #{$xs} {
+                display: none;
+            }
+        }
+    }
+    & .about-3-content{
+        padding-left: 70px;
+        @media #{$lg} {
+            padding-left: 20px;
+        }
+        @media #{$md} {
+            padding-left: 0px;
+        }
+        @media #{$xs} {
+            padding-left: 0px;
+        }
+        & .about-sub-service{
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 30px;
+            @media #{$xs} {
+                display: block;
+            }
+            @media #{$sm} {
+                display: flex;
+            }
+            & .icon{
+                text-align: center;
+                min-height: 105px;
+                min-width: 105px;
+                line-height: 105px;
+                background: $white;
+                border-radius: 50%;
+                box-shadow: 0px 5px 30px 0px rgba(0, 0, 0, 0.05);
+                border-bottom: 5px solid $theme-color-2;
+                display: inline-block;
+                @media #{$xs} {
+                    margin-bottom: 20px;
+                }
+
+            }
+            & .content{
+                & .title{
+                    font-size: 24px;
+                    text-transform: capitalize;
+                }
+                & p{
+                    line-height: 30px;
+                    color: #6c6a72;
+                    font-weight: 500;
+                    padding-top: 12px;
+                }
+            }
+        }
+        & .main-btn{
+            margin-top: 20px;
+            border: 1px solid $theme-color-2;
+        }
+    }
+}
+
+
+
+.infetech-about-4-area{
+    background-image: url(../images/about-bg.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding-top: 120px;
+    padding-bottom: 120px;
+    @media #{$md} {
+        padding-top: 70px;
+        padding-bottom: 70px;
+    }
+    @media #{$xs} {
+        padding-top: 70px;
+        padding-bottom: 70px;
+    }
+}
+
+.about-thumb-4{
+    margin-left: -50px;
+}
+
+.about-thumb-content{
+    @media #{$md} {
+        padding-left: 0;
+        margin-top: 30px;
+    }
+    @media #{$xs} {
+        padding-left: 0;
+        margin-top: 30px;
+    }
+    & .about-sub-item{
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        @media #{$xs} {
+            display: block;
+        }
+        @media #{$sm} {
+            display: flex;
+        }
+        & .number{
+            @media #{$xs} {
+                margin-bottom: 10px;
+            }
+            @media #{$sm} {
+                margin-bottom: 0px;
+            }
+            & span{
+                display: inline-block;
+                height: 65px;
+                width: 65px;
+                text-align: center;
+                line-height: 65px;
+                background: #000;
+                background-image: -moz-linear-gradient( 0deg, rgb(95,45,238) 0%, rgb(184,130,252) 100%);
+                background-image: -webkit-linear-gradient( 0deg, rgb(95,45,238) 0%, rgb(184,130,252) 100%);
+                background-image: -ms-linear-gradient( 0deg, rgb(95,45,238) 0%, rgb(184,130,252) 100%);
+                box-shadow: 0px 5px 30px 0px rgba(0, 0, 0, 0.1);
+                color: $theme-color-2;
+                position: relative;
+                z-index: 10;
+                font-size: 16px;
+                font-weight: 600;
+                border-radius: 50%;
+                &::before{
+                    position: absolute;
+                    content: '';
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%,-50%);
+                    height: 54px;
+                    width: 54px;
+                    background: $white;
+                    border-radius: 50%;
+                    z-index: -1;
+                }
+            }
+        }
+        & .content{
+            & p{
+                font-weight: 500;
+                color: #6c6a72;
+                line-height: 30px;
+            }
+        }
+    }
+    & a{
+        border: 1px solid $theme-color-2;
+    }
+}
+
+

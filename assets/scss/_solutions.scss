@@ -1,0 +1,106 @@
+
+
+/*===========================
+    21.SOLUTIONS css 
+===========================*/
+
+
+
+
+.infetech-solutions-area{
+    background: $black;
+    padding-top: 112px;
+    padding-bottom: 116px;
+    background-image: url(../images/solutions-shape.png);
+    background-position: top right;
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: relative;
+    &::before{
+        position: absolute;
+        content: '';
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 50%;
+        background-image: url(../images/solutions-bg.jpg);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        @media #{$md} {
+            display: none;
+        }
+        @media #{$xs} {
+            display: none;
+        }
+    }
+}
+
+.solutions-content{
+    & .section-title{
+        & span{
+            color: #b0a9c0;
+            &::before{
+                background: #b0a9c0;
+            }
+        }
+        & .title{
+            color: $white;
+        }
+    }
+    & .solutions-box-content{
+        margin-top: 30px;
+        & span{
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 30px;
+            color: $theme-color-2;
+            margin-bottom: 25px;
+        }
+        & p{
+            color: #b0a9c0;
+            font-weight: 500;
+            line-height: 30px;
+            margin-bottom: 29px;
+        }
+    }
+    & .solutions-service{
+        display: flex;
+        gap: 20px;
+        @media #{$lg} {
+            margin-bottom: 20px;
+        }
+        @media #{$md} {
+            margin-bottom: 20px;
+        }
+        @media #{$xs} {
+            margin-bottom: 20px;
+        }
+        & .icon{
+            padding-left: 20px;
+            padding-top: 10px;
+            position: relative;
+            z-index: 10;
+            &::before{
+                position: absolute;
+                content: '';
+                left: 0;
+                top: 0;
+                height: 52px;
+                width: 52px;
+                background: #2d223f;
+                border-radius: 50%;
+                z-index: -1;
+            }
+        }
+        & .content{
+            & span{
+                color: $white;
+                font-size: 20px;
+                font-weight: 800;
+                margin-top: 14px;
+
+            }
+        }
+    }
+}

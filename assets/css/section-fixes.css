@@ -1,0 +1,221 @@
+/* Section fixes for services, about features, and project case study boxes */
+
+/* Generic placeholder */
+.placeholder-bg{
+    background:#f5f3f9 url('../images/icon/image-placeholder.png') center/60px no-repeat;
+}
+
+/* Default thumb background if image fails to load */
+.single-project-box .thumb,
+.about-thumb,
+.single-services-box .icon{
+    background-color:#f5f3f9;
+}
+
+/* 1. Industry-Specific Digital Solutions */
+.infetech-domain-services-area{
+    padding:120px 0 90px;
+    background:#f9f9ff;
+}
+.infetech-domain-services-area .single-services-box{
+    background:#fff;
+    border:1px solid #e9e7f4;
+    border-radius:10px;
+    padding:40px 35px 35px;
+    margin-bottom:30px;
+    text-align:center;
+    box-shadow:0 10px 40px rgba(0,0,0,.05);
+    transition:.3s;
+}
+.infetech-domain-services-area .single-services-box:hover{
+    transform:translateY(-5px);
+    box-shadow:0 15px 45px rgba(0,0,0,.08);
+}
+.single-services-box .icon{
+    margin-bottom:25px;
+    background:none;
+}
+.single-services-box .icon img{
+    max-width:70px;
+    filter:brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(246deg) brightness(104%) contrast(97%);
+}
+.single-services-box .title{
+    font-size:22px;
+    font-weight:800;
+    margin-bottom:15px;
+}
+.single-services-box .service-features{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+.single-services-box .service-features li{
+    position:relative;
+    padding-left:20px;
+    margin-bottom:6px;
+    font-size:15px;
+}
+.single-services-box .service-features li:before{
+    display:none;
+    content:"\f058"; /* font-awesome check-circle */
+    font-family:"Font Awesome 5 Free";
+    font-weight:900;
+    position:absolute;
+    left:0;
+    color:#5f2dee;
+    font-size:14px;
+}
+
+/* 2. Expert MSME Solutions (About Features) */
+.about-features{
+    margin-top:30px;
+}
+.about-features .feature-item{
+    display:flex;
+    align-items:flex-start;
+    margin-bottom:20px;
+}
+.feature-item .icon{
+    flex:0 0 50px;
+    height:50px;
+    line-height:50px;
+    text-align:center;
+    border-radius:50%;
+    background:#5f2dee;
+    color:#fff;
+    font-size:18px;
+    margin-right:18px;
+}
+.feature-item .content h5{
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:6px;
+}
+.feature-item .content p{
+    font-size:15px;
+    margin-bottom:0;
+}
+
+/* 3. MSME Success Stories (Project Boxes) */
+.infetech-project-area .single-project-box{
+    background:#fff;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 10px 40px rgba(0,0,0,.06);
+    margin-bottom:30px;
+    transition:.3s;
+}
+.single-project-box:hover{
+    transform:translateY(-5px);
+}
+.single-project-box .thumb img{
+    width:100%;
+    display:block;
+}
+.single-project-box .content{
+    padding:25px 25px 30px;
+}
+.single-project-box .content .title{
+    font-size:20px;
+    font-weight:800;
+    margin-bottom:10px;
+}
+.single-project-box .results{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+.single-project-box .results li{
+    position:relative;
+    padding-left:18px;
+    font-size:15px;
+    margin-bottom:6px;
+}
+.single-project-box .results li:before{
+    content:"•";
+    color:#5f2dee;
+    position:absolute;
+    left:0;
+}
+
+/* 4. HIDE OLD PROJECT GRID */
+.infetech-project-3-area .single-project-box{display:none;}
+
+/* 5. ABOUT CONTENT BLOCK BACKGROUND */
+.infetech-about-area .about-content{
+    background:#ffffff;
+    padding:40px 35px;
+    border-radius:10px;
+    box-shadow:0 10px 40px rgba(0,0,0,.05);
+}
+
+/* 6. CTA SECTION STYLING */
+.infetech-cta-area{
+    background:linear-gradient(135deg, #5f2dee 0%, #7c3aed 50%, #8b5cf6 100%);
+    position:relative;
+    overflow:hidden;
+}
+.infetech-cta-area::before{
+    content:'';
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="10" cy="60" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="90" cy="40" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity:0.3;
+}
+.infetech-cta-area .cta-content{
+    position:relative;
+    z-index:2;
+}
+.infetech-cta-area .cta-content span{
+    color:#ffffff;
+}
+.infetech-cta-area .cta-content p{
+    color:#ffffff;
+}
+.infetech-cta-area .main-btn{
+    margin-top:30px;
+    background:#ffffff;
+    color:#5f2dee;
+    border:2px solid #ffffff;
+    transition:all 0.3s ease;
+}
+.infetech-cta-area .main-btn:hover{
+    background:transparent;
+    color:#ffffff;
+}
+
+
+
+/* Responsive Tweaks */
+.single-services-box .service-features{
+    text-align:center;
+    margin:20px 0;
+    padding:0;
+    list-style:none;
+}
+.single-services-box .service-features li{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:12px;
+    font-size:15px;
+    padding:8px 0;
+}
+.single-services-box .service-features li i{
+    color:#5f2dee;
+    width:20px;
+    text-align:center;
+    margin-right:12px;
+    font-size:14px;
+    flex-shrink:0;
+}
+
+@media (max-width:767px){
+    .single-services-box{padding:35px 25px;}
+    .single-services-box .title{font-size:20px;}
+    .feature-item{margin-bottom:15px;}
+    .single-project-box .content{padding:22px 20px 25px;}
+}

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <title id="dynamic-title">Service Landing Page - Infetech</title>
+    
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+    <!-- End Google Tag Manager -->
+    
+    <!-- Loading Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Loading Template CSS -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/pe-icon-7-stroke.css">
+    <link href="css/style-magnific-popup.css" rel="stylesheet">
+
+    <!-- Awsome Fonts -->
+    <link rel="stylesheet" href="css/all.min.css">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
+
+    <!-- Font Favicon -->
+    <link rel="shortcut icon" href="images/favicon.ico">
+    
+</head>
+
+<body>
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- Data Layer and Dynamic Tracking -->
+    <script>
+        // Initialize data layer
+        window.dataLayer = window.dataLayer || [];
+        
+        // Function to get URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+        
+        // Function to determine page type based on URL or content
+        function getPageType() {
+            var path = window.location.pathname;
+            var pageName = '';
+            
+            // Determine page type based on URL or content
+            if (path.includes('seo') || document.title.includes('SEO')) {
+                pageName = 'SEOLP';
+            } else if (path.includes('sem') || document.title.includes('SEM')) {
+                pageName = 'SEMLP';
+            } else if (path.includes('digital-marketing') || document.title.includes('Digital Marketing')) {
+                pageName = 'DMLP';
+            } else if (path.includes('wordpress') || document.title.includes('WordPress')) {
+                pageName = 'WPLP';
+            } else if (path.includes('social-media') || document.title.includes('Social Media')) {
+                pageName = 'SMMLP';
+            } else if (path.includes('app-development') || document.title.includes('App Development')) {
+                pageName = 'ADLP';
+            } else if (path.includes('custom-software') || document.title.includes('Custom Software')) {
+                pageName = 'CSDLP';
+            } else if (path.includes('ai-asset-tracking') || document.title.includes('AI Asset Tracking')) {
+                pageName = 'AATLP';
+            } else if (path.includes('ai-loyalty') || document.title.includes('AI Loyalty')) {
+                pageName = 'AILP';
+            } else if (path.includes('whatsapp-marketing') || document.title.includes('WhatsApp Marketing')) {
+                pageName = 'WMLP';
+            } else if (path.includes('custom-search') || document.title.includes('Custom Search')) {
+                pageName = 'CSELP';
+            } else {
+                pageName = 'GENERICLP';
+            }
+            
+            return pageName;
+        }
+        
+        // Function to determine lead value based on page type
+        function getLeadValue(pageName) {
+            var leadValues = {
+                'SEOLP': 75,
+                'SEMLP': 100,
+                'DMLP': 150,
+                'WPLP': 50,
+                'SMMLP': 60,
+                'ADLP': 200,
+                'CSDLP': 300,
+                'AATLP': 250,
+                'AILP': 180,
+                'WMLP': 80,
+                'CSELP': 120,
+                'GENERICLP': 50
+            };
+            return leadValues[pageName] || 50;
+        }
+        
+        // Dynamic content insertion based on URL parameters
+        function insertDynamicContent() {
+            var keyword = getUrlParameter('keyword') || 'our services';
+            var adSource = getUrlParameter('source') || 'direct';
+            var campaign = getUrlParameter('campaign') || 'organic';
+            
+            // Update page title
+            var titleElement = document.getElementById('dynamic-title');
+            if (titleElement) {
+                titleElement.textContent = keyword.charAt(0).toUpperCase() + keyword.slice(1) + ' - Infetech';
+            }
+            
+            // Update hero headline
+            var heroHeadline = document.getElementById('hero-headline');
+            if (heroHeadline) {
+                heroHeadline.textContent = 'Transform Your Business with ' + keyword.charAt(0).toUpperCase() + keyword.slice(1);
+            }
+            
+            // Update hero subheadline
+            var heroSubheadline = document.getElementById('hero-subheadline');
+            if (heroSubheadline) {
+                heroSubheadline.textContent = 'Get expert ' + keyword + ' solutions that drive results. Start your free consultation today.';
+            }
+            
+            // Update CTA button text
+            var ctaButtons = document.querySelectorAll('.cta-button');
+            ctaButtons.forEach(function(button) {
+                button.textContent = 'Get Free ' + keyword.charAt(0).toUpperCase() + keyword.slice(1) + ' Consultation';
+            });
+            
+            // Update form placeholder
+            var formSelect = document.getElementById('service-select');
+            if (formSelect) {
+                formSelect.innerHTML = '<option value="">We need ' + keyword + ' for...</option>' +
+                                     '<option value="Individual">Our Business</option>' +
+                                     '<option value="Professional">Our Team</option>';
+            }
+        }
+        
+        // Push initial page view data
+        dataLayer.push({
+            'event': 'landing_page_view',
+            'page_name': getPageType(),
+            'keyword': getUrlParameter('keyword') || 'default',
+            'ad_source': getUrlParameter('source') || 'direct',
+            'campaign': getUrlParameter('campaign') || 'organic',
+            'creative_id': getUrlParameter('creative_id') || 'none',
+            'ad_group': getUrlParameter('ad_group') || 'none',
+            'landing_page_type': getUrlParameter('lp_type') || 'general',
+            'page_url': window.location.href,
+            'page_title': document.title,
+            'user_agent': navigator.userAgent,
+            'referrer': document.referrer
+        });
+        
+        // Track form interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Insert dynamic content
+            insertDynamicContent();
+            
+            // Track form field interactions
+            var formFields = document.querySelectorAll('input, select, textarea');
+            formFields.forEach(function(field) {
+                field.addEventListener('focus', function() {
+                    dataLayer.push({
+                        'event': 'form_field_focus',
+                        'page_name': getPageType(),
+                        'field_name': this.name || this.id || 'unknown',
+                        'field_type': this.type || 'text',
+                        'keyword': getUrlParameter('keyword'),
+                        'ad_source': getUrlParameter('source')
+                    });
+                });
+            });
+            
+            // Track form submissions
+            var forms = document.querySelectorAll('form');
+            forms.forEach(function(form) {
+                form.addEventListener('submit', function(e) {
+                    // Get form data for lead tracking
+                    var formData = new FormData(this);
+                    var leadData = {};
+                    for (var pair of formData.entries()) {
+                        leadData[pair[0]] = pair[1];
+                    }
+                    
+                    dataLayer.push({
+                        'event': 'form_submit',
+                        'page_name': getPageType(),
+                        'form_id': this.id || 'unknown',
+                        'form_action': this.action,
+                        'keyword': getUrlParameter('keyword'),
+                        'ad_source': getUrlParameter('source'),
+                        'campaign': getUrlParameter('campaign'),
+                        'creative_id': getUrlParameter('creative_id'),
+                        'lead_data': leadData
+                    });
+                    
+                    // Track lead generation with value
+                    setTimeout(function() {
+                        dataLayer.push({
+                            'event': 'lead_generated',
+                            'page_name': getPageType(),
+                            'lead_value': getLeadValue(getPageType()),
+                            'keyword': getUrlParameter('keyword'),
+                            'ad_source': getUrlParameter('source'),
+                            'campaign': getUrlParameter('campaign'),
+                            'creative_id': getUrlParameter('creative_id')
+                        });
+                    }, 1000);
+                });
+            });
+            
+            // Track CTA button clicks
+            var ctaButtons = document.querySelectorAll('.main-btn, .btn-green, .register-submit, .discover-btn, .cta-button');
+            ctaButtons.forEach(function(button) {
+                button.addEventListener('click', function(e) {
+                    dataLayer.push({
+                        'event': 'cta_click',
+                        'page_name': getPageType(),
+                        'cta_text': this.textContent.trim(),
+                        'cta_class': this.className,
+                        'keyword': getUrlParameter('keyword'),
+                        'ad_source': getUrlParameter('source'),
+                        'campaign': getUrlParameter('campaign')
+                    });
+                });
+            });
+            
+            // Track scroll depth
+            var scrollDepth = 0;
+            window.addEventListener('scroll', function() {
+                var scrollTop = window.pageYOffset;
+                var docHeight = document.body.scrollHeight - window.innerHeight;
+                var scrollPercent = Math.round((scrollTop / docHeight) * 100);
+                
+                if (scrollPercent >= 25 && scrollDepth < 25) {
+                    scrollDepth = 25;
+                    dataLayer.push({
+                        'event': 'scroll_depth',
+                        'page_name': getPageType(),
+                        'scroll_percent': 25,
+                        'keyword': getUrlParameter('keyword'),
+                        'ad_source': getUrlParameter('source')
+                    });
+                } else if (scrollPercent >= 50 && scrollDepth < 50) {
+                    scrollDepth = 50;
+                    dataLayer.push({
+                        'event': 'scroll_depth',
+                        'page_name': getPageType(),
+                        'scroll_percent': 50,
+                        'keyword': getUrlParameter('keyword'),
+                        'ad_source': getUrlParameter('source')
+                    });
+                } else if (scrollPercent >= 75 && scrollDepth < 75) {
+                    scrollDepth = 75;
+                    dataLayer.push({
+                        'event': 'scroll_depth',
+                        'page_name': getPageType(),
+                        'scroll_percent': 75,
+                        'keyword': getUrlParameter('keyword'),
+                        'ad_source': getUrlParameter('source')
+                    });
+                } else if (scrollPercent >= 90 && scrollDepth < 90) {
+                    scrollDepth = 90;
+                    dataLayer.push({
+                        'event': 'scroll_depth',
+                        'page_name': getPageType(),
+                        'scroll_percent': 90,
+                        'keyword': getUrlParameter('keyword'),
+                        'ad_source': getUrlParameter('source')
+                    });
+                }
+            });
+        });
+    </script>
+
+    <!--begin header -->
+    <header class="header">
+
+        <!--begin navbar-fixed-top -->
+        <nav class="navbar navbar-default navbar-fixed-top">
+            
+            <!--begin container -->
+            <div class="container">
+
+                <!--begin navbar -->
+                <nav class="navbar navbar-expand-lg">
+
+                    <!--begin logo -->
+                    <a class="navbar-brand" href="#">Infetech</a>
+                    <!--end logo -->
+
+                    <!--begin navbar-toggler -->
+                    <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
+                    </button>
+                    <!--end navbar-toggler -->
+
+                    <!--begin navbar-collapse -->
+                    <div class="navbar-collapse collapse" id="navbarCollapse" style="">
+                        
+                        <!--begin navbar-nav -->
+                        <ul class="navbar-nav ml-auto">
+
+                            <li><a href="#home">Home</a></li>
+
+                            <li><a href="#about">About</a></li>
+
+                            <li><a href="#features">Features</a></li>
+
+                            <li><a href="#contact">Contact</a></li>
+
+                            <li class="discover-link"><a href="#contact" class="external discover-btn">Get Started</a></li>
+
+                        </ul>
+                        <!--end navbar-nav -->
+
+                    </div>
+                    <!--end navbar-collapse -->
+
+                </nav>
+                <!--end navbar -->
+
+            </div>
+    		<!--end container -->
+            
+        </nav>
+    	<!--end navbar-fixed-top -->
+        
+    </header>
+    <!--end header -->
+
+    <!--begin home section -->
+    <section class="home-section" id="home">
+
+        <div class="home-section-overlay"></div>
+
+		<!--begin container -->
+		<div class="container">
+
+	        <!--begin row -->
+	        <div class="row">
+	          
+	            <!--begin col-md-5-->
+	            <div class="col-md-6 padding-top-120">
+
+	          		<h1 id="hero-headline">Transform Your Business</h1>
+
+	          		<p class="hero-text" id="hero-subheadline">Get expert solutions that drive results. Start your free consultation today.</p>
+
+                    <!--begin popup-video-wrapper-->
+                    <div class="popup-gallery-wrapper">
+                        
+                        <!--begin popup-video-->
+                        <div class="popup-gallery">
+                            
+                            <a class="popup4 video-icon" href="https://www.youtube.com/watch?v=FPfQMVf4vwQ">
+                                <i class="fas fa-play"></i>
+                            </a>
+
+                        </div>
+                        <!--end popup-video-->
+
+                        <p class="popup-video-text">Watch Explanation Video</p>
+
+                    </div>
+                    <!--end popup-video-wrapper-->
+
+	            </div>
+	            <!--end col-md-5-->
+
+                <!--begin col-md-2-->
+                <div class="col-md-1"></div>
+                <!--end col-md-2-->
+	       
+				<!--begin col-md-5-->
+	            <div class="col-md-5 margin-top-20">
+
+                    <!--begin register-form-wrapper-->
+                    <div class="register-form-wrapper wow bounceIn" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: bounceIn;">
+
+                        <h3>Get Your Free Consultation</h3>
+
+                        <p>Start your journey to success today.</p>
+
+                        <!--begin form-->
+                        <div>
+                             
+                            <!--begin success message -->
+                            <p class="register_success_box" style="display:none;">We received your message and you'll hear from us soon. Thank You!</p>
+                            <!--end success message -->
+                            
+                            <!--begin register form -->
+                            <form id="register-form" class="register-form register" action="php/register.php" method="post">
+                                
+                    
+                                <input class="register-input name-input white-input" required="" name="register_names" placeholder="Company Name*" type="text">
+                            
+                                <input class="register-input name-email white-input" required="" name="register_email" placeholder="Email Address*" type="email">
+
+                                <select class="register-input white-input" required="" name="register_ticket" id="service-select">
+
+                                    <option value="">We need our services for...</option>
+
+                                    <option value="Individual">Our Business</option>
+
+                                    <option value="Professional">Our Team</option>
+
+                                </select>
+                               
+                                <input value="Get Free Consultation" class="register-submit cta-button" type="submit">
+                                    
+                            </form>
+                            <!--end register form -->
+
+                            <p class="register-form-terms">No Credit Card &#8226; No Installation Required</p>
+                            
+                        </div>
+                        <!--end form-->
+
+	            </div>
+	            <!--end col-md-5-->
+
+	        </div>
+	        <!--end row -->
+
+		</div>
+		<!--end container -->
+
+    </section>
+    <!--end home section -->
+
+    <!-- Add more sections as needed for your specific service -->
+
+    <!--begin newsletter section -->
+    <section class="newsletter-wrapper small-paddings" id="newsletter-section">
+
+        <div class="image-green-overlay"></div>
+
+        <!--begin container -->
+        <div class="container">
+
+            <!--begin row -->
+            <div class="row">
+
+                <!--begin col-md-12 -->
+                <div class="col-md-12 text-center padding-top-50 padding-bottom-20">
+
+                    <h3 class="white-text">Ready to transform your business?<br>
+                    Get started with our expert team today.</h3>
+
+                </div>
+                <!--end col-md-12 -->
+
+                <!--begin col-md-12-->
+                <div class="col-md-12 padding-bottom-40">
+
+                    <!--begin newsletter_form_wrapper -->
+                    <div class="newsletter_form_wrapper" data-wow-delay="0.25s">
+                        
+                        <!--begin newsletter_form_box -->
+                        <div class="newsletter_form_box">
+                            
+                            <!--begin success_box -->
+                            <p class="newsletter_success_box" style="display:none;">We received your message and you'll hear from us soon. Thank You!</p>
+                            <!--end success_box -->
+                            
+                            <!--begin newsletter-form -->
+                            <form id="newsletter-form" class="newsletter-form" action="php/newsletter.php" method="post">
+
+                                <input id="email_newsletter" type="email" name="nf_email" placeholder="Enter Your Email Address">  
+
+                                <input type="submit" value="GET STARTED!" id="submit-button-newsletter" class="cta-button">
+
+                            </form>
+                            <!--end newsletter-form -->
+                        
+                        </div>
+                        <!--end newsletter_form_box -->
+            
+                    </div>
+                    <!--end newsletter_form_wrapper -->
+
+                </div>
+                <!--end col-md-12 -->
+
+            </div>
+            <!--end row -->
+
+        </div>
+        <!--end container -->
+
+    </section>
+    <!--end newsletter section -->
+
+    <!--begin footer -->
+    <footer class="footer">
+
+        <!--begin container -->
+        <div class="container">
+
+            <!--begin row -->
+            <div class="row">
+
+                <!--begin col-md-12 -->
+                <div class="col-md-12 text-center">
+
+                    <p>© 2024 Infetech. All rights reserved.</p>
+
+                </div>
+                <!--end col-md-12 -->
+
+            </div>
+            <!--end row -->
+
+        </div>
+        <!--end container -->
+
+    </footer>
+    <!--end footer -->
+
+    <!-- Loading jQuery -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+
+    <!-- Loading Bootstrap -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Loading Template JS -->
+    <script src="js/plugins.js"></script>
+    <script src="js/custom.js"></script>
+
+</body>
+
+</html> 

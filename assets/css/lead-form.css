@@ -1,0 +1,413 @@
+/* Lead Form Styles */
+/* Based on existing contact form styles from the template */
+
+.lead-form-container {
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    margin: 30px 0;
+}
+
+.lead-form {
+    margin-top: 30px;
+}
+
+.lead-form .input-box {
+    margin-bottom: 20px;
+}
+
+.lead-form .input-box input,
+.lead-form .input-box textarea,
+.lead-form .input-box select {
+    width: 100%;
+    height: 50px;
+    padding: 0 20px;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+    background: #fff;
+    transition: all 0.3s ease;
+}
+
+.lead-form .input-box input:focus,
+.lead-form .input-box textarea:focus,
+.lead-form .input-box select:focus {
+    border-color: #b882fc;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(184, 130, 252, 0.1);
+}
+
+.lead-form .input-box textarea {
+    height: 120px;
+    padding: 15px 20px;
+    resize: vertical;
+}
+
+.lead-form .input-box input[readonly] {
+    background: #f8f9fa;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+.lead-form .captcha-group {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #e1e1e1;
+}
+
+.lead-form .captcha-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #333;
+}
+
+.lead-form .captcha-group #captchaQuestion {
+    color: #b882fc;
+    font-weight: bold;
+}
+
+.lead-form .main-btn {
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(45deg, #b882fc, #8a5cf6);
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.lead-form .main-btn:hover {
+    background: linear-gradient(45deg, #8a5cf6, #b882fc);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(138, 92, 246, 0.3);
+}
+
+.lead-form .main-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Message Styles */
+.lead-form-message {
+    padding: 15px 20px;
+    border-radius: 5px;
+    margin: 20px 0;
+    font-weight: 500;
+    text-align: center;
+}
+
+.lead-form-message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.lead-form-message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Demo Navigation Styles */
+.demo-nav {
+    margin-bottom: 40px;
+}
+
+.demo-nav .btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.demo-nav .btn {
+    padding: 10px 20px;
+    border: 2px solid #b882fc;
+    background: transparent;
+    color: #b882fc;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.demo-nav .btn:hover,
+.demo-nav .btn.active {
+    background: #b882fc;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(184, 130, 252, 0.3);
+}
+
+/* Feature Cards */
+.features-section {
+    margin-top: 60px;
+}
+
+.feature-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.feature-card h4 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.feature-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.feature-card ul li {
+    padding: 8px 0;
+    color: #666;
+    position: relative;
+    padding-left: 20px;
+}
+
+.feature-card ul li:before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #b882fc;
+    font-weight: bold;
+}
+
+/* Implementation Guide */
+.implementation-guide {
+    margin-top: 60px;
+}
+
+.implementation-guide .card {
+    border: none;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+}
+
+.implementation-guide .card-header {
+    background: linear-gradient(45deg, #b882fc, #8a5cf6);
+    color: #fff;
+    border-radius: 10px 10px 0 0;
+    padding: 20px 30px;
+    border: none;
+}
+
+.implementation-guide .card-header h4 {
+    margin: 0;
+    font-weight: 600;
+}
+
+.implementation-guide .card-body {
+    padding: 30px;
+}
+
+.implementation-guide h5 {
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.implementation-guide pre {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    border-left: 4px solid #b882fc;
+    font-size: 13px;
+    overflow-x: auto;
+}
+
+.implementation-guide code {
+    color: #e83e8c;
+    background: rgba(232, 62, 140, 0.1);
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+/* Form Type Variations */
+.lead-form-container.service-form {
+    border-left: 5px solid #28a745;
+}
+
+.lead-form-container.compact-form {
+    padding: 25px;
+}
+
+.lead-form-container.compact-form .section-title {
+    margin-bottom: 20px;
+}
+
+.lead-form-container.popup-form {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+}
+
+.lead-form-container.popup-form .section-title h3,
+.lead-form-container.popup-form .section-title p {
+    color: #fff;
+}
+
+.lead-form-container.popup-form .input-box input,
+.lead-form-container.popup-form .input-box textarea {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .lead-form-container {
+        padding: 20px;
+        margin: 20px 0;
+    }
+    
+    .lead-form .input-box input,
+    .lead-form .input-box textarea,
+    .lead-form .input-box select {
+        height: 45px;
+        font-size: 14px;
+    }
+    
+    .lead-form .input-box textarea {
+        height: 100px;
+    }
+    
+    .lead-form .main-btn {
+        height: 45px;
+        font-size: 14px;
+    }
+    
+    .demo-nav .btn-group {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .demo-nav .btn {
+        width: 200px;
+        margin-bottom: 10px;
+    }
+    
+    .feature-card {
+        padding: 20px;
+    }
+    
+    .implementation-guide .card-body {
+        padding: 20px;
+    }
+}
+
+/* Loading Animation */
+.lead-form .main-btn:disabled {
+    position: relative;
+}
+
+.lead-form .main-btn:disabled::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid transparent;
+    border-top: 2px solid #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Form Validation Styles */
+.lead-form .input-box input:invalid,
+.lead-form .input-box textarea:invalid {
+    border-color: #dc3545;
+}
+
+.lead-form .input-box input:valid,
+.lead-form .input-box textarea:valid {
+    border-color: #28a745;
+}
+
+/* Focus States */
+.lead-form .input-box input:focus,
+.lead-form .input-box textarea:focus,
+.lead-form .input-box select:focus {
+    border-color: #b882fc;
+    box-shadow: 0 0 0 3px rgba(184, 130, 252, 0.1);
+}
+
+/* Placeholder Styles */
+.lead-form .input-box input::placeholder,
+.lead-form .input-box textarea::placeholder {
+    color: #6c757d;
+    opacity: 0.7;
+}
+
+/* Service Name Field */
+.lead-form .input-box input[name="service"] {
+    background: #f8f9fa;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+/* Captcha Refresh Button (Optional) */
+.captcha-refresh {
+    background: none;
+    border: none;
+    color: #b882fc;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 10px;
+    text-decoration: underline;
+}
+
+.captcha-refresh:hover {
+    color: #8a5cf6;
+}
+
+/* Select Dropdown Styling */
+.lead-form .input-box select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 12px center;
+    background-repeat: no-repeat;
+    background-size: 16px 12px;
+    padding-right: 40px;
+}
+
+/* Animation for form switching */
+.lead-form-container {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+} 

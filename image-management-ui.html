@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Management System - Admin Panel</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 4px 0;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            color: white;
+            background: rgba(255,255,255,0.1);
+            transform: translateX(5px);
+        }
+
+        .sidebar .nav-link i {
+            width: 20px;
+            margin-right: 10px;
+        }
+
+        .main-content {
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-custom {
+            border-radius: 25px;
+            padding: 10px 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .image-preview {
+            width: 100px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+        }
+
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            border: none;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+        }
+
+        .upload-area {
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(0,123,255,0.05);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--success-color);
+            background: rgba(40,167,69,0.1);
+        }
+
+        .progress-bar {
+            border-radius: 10px;
+            height: 8px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            border-radius: 10px;
+            padding: 15px 20px;
+            color: white;
+            font-weight: 500;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: var(--success-color);
+        }
+
+        .notification.error {
+            background: var(--danger-color);
+        }
+
+        .notification.warning {
+            background: var(--warning-color);
+        }
+
+        .notification.info {
+            background: var(--info-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div id="loginForm" class="container-fluid" style="display: none; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-lock fa-3x text-primary mb-3"></i>
+                            <h3>Admin Login</h3>
+                            <p class="text-muted">Enter your credentials to access the admin panel</p>
+                        </div>
+                        
+                        <form onsubmit="handleLogin(event)">
+                            <div class="mb-3">
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" placeholder="Enter username" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" placeholder="Enter password" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">CAPTCHA</label>
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <canvas id="captchaCanvas" width="200" height="60" style="border: 1px solid #ddd; border-radius: 4px;"></canvas>
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="refreshCaptcha()">
+                                        <i class="fas fa-refresh"></i>
+                                    </button>
+                                </div>
+                                <input type="text" class="form-control mt-2" id="captchaInput" placeholder="Enter CAPTCHA" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-custom w-100">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </button>
+                        </form>
+                        
+                        <div class="text-center mt-3">
+                            <small class="text-muted">
+                                Default credentials: admin / admin123
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Content -->
+    <div id="adminContent" class="container-fluid" style="display: none;">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 sidebar p-0">
+                <div class="p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="mb-0">
+                            <i class="fas fa-cogs"></i>
+                            Admin Panel
+                        </h4>
+                        <button class="btn btn-sm btn-outline-light" onclick="handleLogout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                    
+                    <nav class="nav flex-column">
+                        <a class="nav-link active" href="#dashboard" data-bs-toggle="tab" onclick="switchTab('dashboard')">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Dashboard
+                        </a>
+                        <a class="nav-link" href="#leads" data-bs-toggle="tab" onclick="switchTab('leads')">
+                            <i class="fas fa-users"></i>
+                            Leads
+                        </a>
+                        <a class="nav-link" href="#images" data-bs-toggle="tab" onclick="switchTab('images')">
+                            <i class="fas fa-image"></i>
+                            Images
+                        </a>
+                        <a class="nav-link" href="#campaigns" data-bs-toggle="tab" onclick="switchTab('campaigns')">
+                            <i class="fas fa-bullhorn"></i>
+                            Campaigns
+                        </a>
+                        <a class="nav-link" href="#analytics" data-bs-toggle="tab" onclick="switchTab('analytics')">
+                            <i class="fas fa-chart-line"></i>
+                            Analytics
+                        </a>
+                        <a class="nav-link" href="#security" data-bs-toggle="tab" onclick="switchTab('security')">
+                            <i class="fas fa-shield-alt"></i>
+                            Security
+                        </a>
+                        <a class="nav-link" href="#settings" data-bs-toggle="tab" onclick="switchTab('settings')">
+                            <i class="fas fa-cog"></i>
+                            Settings
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 main-content p-4">
+                <div class="tab-content">
+                    <!-- Dashboard Tab -->
+                    <div class="tab-pane fade show active" id="dashboard">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2>Dashboard</h2>
+                            <button class="btn btn-primary btn-custom" onclick="refreshStats()">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+
+                        <!-- Stats Cards -->
+                        <div class="row mb-4">
+                            <div class="col-md-2">
+                                <div class="card stats-card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h6 class="text-white-50">Total Leads</h6>
+                                                <h3 class="mb-0" id="totalLeads">0</h3>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <i class="fas fa-users fa-2x text-white-50"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="card stats-card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h6 class="text-white-50">New Leads</h6>
+                                                <h3 class="mb-0" id="newLeads">0</h3>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <i class="fas fa-user-plus fa-2x text-white-50"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="card stats-card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h6 class="text-white-50">Qualified</h6>
+                                                <h3 class="mb-0" id="qualifiedLeads">0</h3>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <i class="fas fa-user-check fa-2x text-white-50"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="card stats-card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h6 class="text-white-50">Won</h6>
+                                                <h3 class="mb-0" id="wonLeads">0</h3>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <i class="fas fa-trophy fa-2x text-white-50"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="card stats-card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h6 class="text-white-50">Total Images</h6>
+                                                <h3 class="mb-0" id="totalImages">0</h3>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <i class="fas fa-images fa-2x text-white-50"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="card stats-card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <h6 class="text-white-50">Campaigns</h6>
+                                                <h3 class="mb-0" id="activeCampaigns">0</h3>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <i class="fas fa-bullhorn fa-2x text-white-50"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+
+                        <!-- Recent Activity -->
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Recent Activity</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="recentActivity">
+                                            <!-- Activity items will be loaded here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Quick Actions</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <button class="btn btn-primary btn-custom w-100 mb-2" onclick="showAddImageModal()">
+                                            <i class="fas fa-plus"></i> Add New Image
+                                        </button>
+                                        <button class="btn btn-success btn-custom w-100 mb-2" onclick="showAddCampaignModal()">
+                                            <i class="fas fa-bullhorn"></i> Create Campaign
+                                        </button>
+                                        <button class="btn btn-info btn-custom w-100 mb-2" onclick="exportData()">
+                                            <i class="fas fa-download"></i> Export Data
+                                        </button>
+                                        <button class="btn btn-warning btn-custom w-100" onclick="importData()">
+                                            <i class="fas fa-upload"></i> Import Data
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Leads Tab -->
+                    <div class="tab-pane fade" id="leads">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2>Lead Management</h2>
+                            <div>
+                                <button class="btn btn-success btn-custom me-2" onclick="exportLeads()">
+                                    <i class="fas fa-download"></i> Export
+                                </button>
+                                <button class="btn btn-warning btn-custom me-2" onclick="importLeads()">
+                                    <i class="fas fa-upload"></i> Import
+                                </button>
+                                <button class="btn btn-primary btn-custom" onclick="showAddLeadModal()">
+                                    <i class="fas fa-plus"></i> Add Lead
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Lead Filters -->
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Status</label>
+                                        <select class="form-select" id="leadStatusFilter">
+                                            <option value="">All Status</option>
+                                            <option value="new">New</option>
+                                            <option value="contacted">Contacted</option>
+                                            <option value="qualified">Qualified</option>
+                                            <option value="proposal_sent">Proposal Sent</option>
+                                            <option value="won">Won</option>
+                                            <option value="lost">Lost</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Source</label>
+                                        <select class="form-select" id="leadSourceFilter">
+                                            <option value="">All Sources</option>
+                                            <option value="landing_page">Landing Page</option>
+                                            <option value="cta_button">CTA Button</option>
+                                            <option value="contact_form">Contact Form</option>
+                                            <option value="consultation_modal">Consultation Modal</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Service</label>
+                                        <select class="form-select" id="leadServiceFilter">
+                                            <option value="">All Services</option>
+                                            <option value="app_development">App Development</option>
+                                            <option value="digital_marketing">Digital Marketing</option>
+                                            <option value="custom_software">Custom Software</option>
+                                            <option value="seo_services">SEO Services</option>
+                                            <option value="whatsapp_marketing">WhatsApp Marketing</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Search</label>
+                                        <input type="text" class="form-control" id="leadSearchFilter" placeholder="Search leads...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Leads Table -->
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Contact</th>
+                                                <th>Company</th>
+                                                <th>Service</th>
+                                                <th>Status</th>
+                                                <th>Source</th>
+                                                <th>Budget/Timeline</th>
+                                                <th>Created</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="leadsTableBody">
+                                            <!-- Leads will be loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Images Tab -->
+                    <div class="tab-pane fade" id="images">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2>Image Management</h2>
+                            <button class="btn btn-primary btn-custom" onclick="showAddImageModal()">
+                                <i class="fas fa-plus"></i> Add New Image
+                            </button>
+                        </div>
+
+                        <!-- Filters -->
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Category</label>
+                                        <select class="form-select" id="categoryFilter">
+                                            <option value="">All Categories</option>
+                                            <option value="banners">Banners</option>
+                                            <option value="services">Services</option>
+                                            <option value="projects">Projects</option>
+                                            <option value="team">Team</option>
+                                            <option value="blog">Blog</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Status</label>
+                                        <select class="form-select" id="statusFilter">
+                                            <option value="">All Status</option>
+                                            <option value="active">Active</option>
+                                            <option value="inactive">Inactive</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Search</label>
+                                        <input type="text" class="form-control" id="searchFilter" placeholder="Search images...">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">&nbsp;</label>
+                                        <button class="btn btn-secondary btn-custom w-100" onclick="filterImages()">
+                                            <i class="fas fa-search"></i> Filter
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Images Table -->
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Preview</th>
+                                                <th>Name</th>
+                                                <th>Category</th>
+                                                <th>Dimensions</th>
+                                                <th>Status</th>
+                                                <th>Views</th>
+                                                <th>Clicks</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="imagesTableBody">
+                                            <!-- Images will be loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Campaigns Tab -->
+                    <div class="tab-pane fade" id="campaigns">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2>Campaign Management</h2>
+                            <button class="btn btn-primary btn-custom" onclick="showAddCampaignModal()">
+                                <i class="fas fa-plus"></i> Create Campaign
+                            </button>
+                        </div>
+
+                        <!-- Campaigns Table -->
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Campaign Name</th>
+                                                <th>Status</th>
+                                                <th>Target Audience</th>
+                                                <th>Start Date</th>
+                                                <th>End Date</th>
+                                                <th>Views</th>
+                                                <th>Clicks</th>
+                                                <th>CTR</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="campaignsTableBody">
+                                            <!-- Campaigns will be loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analytics Tab -->
+                    <div class="tab-pane fade" id="analytics">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2>Analytics & Tracking</h2>
+                            <div>
+                                <button class="btn btn-primary btn-custom me-2" onclick="refreshAnalytics()">
+                                    <i class="fas fa-sync-alt"></i> Refresh
+                                </button>
+                                <button class="btn btn-success btn-custom" onclick="exportAnalytics()">
+                                    <i class="fas fa-download"></i> Export
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Analytics Charts -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Image Performance</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="imagePerformanceChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Campaign Performance</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="campaignPerformanceChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Detailed Analytics -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Detailed Analytics</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Image/Campaign</th>
+                                                        <th>Views</th>
+                                                        <th>Clicks</th>
+                                                        <th>CTR</th>
+                                                        <th>Avg. Time</th>
+                                                        <th>Conversions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="analyticsTableBody">
+                                                    <!-- Analytics data will be loaded here -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Tab -->
+                    <div class="tab-pane fade" id="security">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2>Security Dashboard</h2>
+                            <button class="btn btn-danger btn-custom" onclick="exportSecurityLog()">
+                                <i class="fas fa-download"></i> Export Security Log
+                            </button>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Security Statistics</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <strong>Blocked IPs:</strong> <span id="blockedIPs">0</span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <strong>Rate Limit Attempts:</strong> <span id="rateLimitAttempts">0</span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <strong>Security Events:</strong> <span id="securityEvents">0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Recent Security Events</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Time</th>
+                                                        <th>Event</th>
+                                                        <th>Type</th>
+                                                        <th>Details</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="securityEventsTable">
+                                                    <!-- Security events will be loaded here -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings Tab -->
+                    <div class="tab-pane fade" id="settings">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2>Settings</h2>
+                            <button class="btn btn-primary btn-custom" onclick="saveSettings()">
+                                <i class="fas fa-save"></i> Save Settings
+                            </button>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Tracking Configuration</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label class="form-label">Google Analytics ID</label>
+                                            <input type="text" class="form-control" id="gaTrackingId" placeholder="GA_MEASUREMENT_ID">
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="enableTracking" checked>
+                                                <label class="form-check-label" for="enableTracking">
+                                                    Enable Image Tracking
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="enableLazyLoading" checked>
+                                                <label class="form-check-label" for="enableLazyLoading">
+                                                    Enable Lazy Loading
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Image Modal -->
+    <div class="modal fade" id="addImageModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Image</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addImageForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Category</label>
+                                    <select class="form-select" id="imageCategory" required>
+                                        <option value="">Select Category</option>
+                                        <option value="banners">Banners</option>
+                                        <option value="services">Services</option>
+                                        <option value="projects">Projects</option>
+                                        <option value="team">Team</option>
+                                        <option value="blog">Blog</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Image Key</label>
+                                    <input type="text" class="form-control" id="imageKey" placeholder="e.g., hero_banner" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Filename</label>
+                                    <input type="text" class="form-control" id="imageFilename" placeholder="e.g., banner-hero.jpg" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Image Path</label>
+                                    <input type="text" class="form-control" id="imagePath" placeholder="e.g., assets/images/banner-hero.jpg" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Alt Text</label>
+                                    <input type="text" class="form-control" id="imageAltText" placeholder="Descriptive alt text" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Title</label>
+                                    <input type="text" class="form-control" id="imageTitle" placeholder="Image title">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Width</label>
+                                    <input type="number" class="form-control" id="imageWidth" placeholder="1920">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Height</label>
+                                    <input type="number" class="form-control" id="imageHeight" placeholder="1080">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">SEO Keywords</label>
+                            <input type="text" class="form-control" id="imageKeywords" placeholder="keyword1, keyword2, keyword3">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" id="imageDescription" rows="3" placeholder="Image description"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="addImage()">Add Image</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Lead Modal -->
+    <div class="modal fade" id="addLeadModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Lead</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addLeadForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="newLeadName" placeholder="Full name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="newLeadEmail" placeholder="email@company.com" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Phone</label>
+                                    <input type="tel" class="form-control" id="newLeadPhone" placeholder="+1-555-0123">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Company</label>
+                                    <input type="text" class="form-control" id="newLeadCompany" placeholder="Company name">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Service</label>
+                                    <select class="form-select" id="newLeadService" required>
+                                        <option value="">Select Service</option>
+                                        <option value="app_development">App Development</option>
+                                        <option value="digital_marketing">Digital Marketing</option>
+                                        <option value="custom_software">Custom Software</option>
+                                        <option value="seo_services">SEO Services</option>
+                                        <option value="whatsapp_marketing">WhatsApp Marketing</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Source</label>
+                                    <select class="form-select" id="newLeadSource" required>
+                                        <option value="">Select Source</option>
+                                        <option value="landing_page">Landing Page</option>
+                                        <option value="cta_button">CTA Button</option>
+                                        <option value="contact_form">Contact Form</option>
+                                        <option value="consultation_modal">Consultation Modal</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Budget</label>
+                                    <input type="text" class="form-control" id="newLeadBudget" placeholder="$5,000 - $15,000">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Timeline</label>
+                                    <input type="text" class="form-control" id="newLeadTimeline" placeholder="1-3 months">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Message</label>
+                            <textarea class="form-control" id="newLeadMessage" rows="3" placeholder="Lead's message or requirements"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="addNewLead()">Add Lead</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Lead Modal -->
+    <div class="modal fade" id="viewLeadModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Lead Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Contact Information</h6>
+                            <p><strong>Name:</strong> <span id="leadName"></span></p>
+                            <p><strong>Email:</strong> <span id="leadEmail"></span></p>
+                            <p><strong>Phone:</strong> <span id="leadPhone"></span></p>
+                            <p><strong>Company:</strong> <span id="leadCompany"></span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Project Details</h6>
+                            <p><strong>Service:</strong> <span id="leadService"></span></p>
+                            <p><strong>Source:</strong> <span id="leadSource"></span></p>
+                            <p><strong>Status:</strong> <span id="leadStatus"></span></p>
+                            <p><strong>Budget:</strong> <span id="leadBudget"></span></p>
+                            <p><strong>Timeline:</strong> <span id="leadTimeline"></span></p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h6>Message</h6>
+                            <p id="leadMessage"></p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <h6>Notes</h6>
+                            <p id="leadNotes"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Timeline</h6>
+                            <p><strong>Created:</strong> <span id="leadCreated"></span></p>
+                            <p><strong>Last Contacted:</strong> <span id="leadLastContacted"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="editLeadFromView()">Edit Lead</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Lead Modal -->
+    <div class="modal fade" id="editLeadModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Lead</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editLeadForm">
+                        <input type="hidden" id="editLeadId">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="editLeadName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="editLeadEmail" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Phone</label>
+                                    <input type="tel" class="form-control" id="editLeadPhone">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Company</label>
+                                    <input type="text" class="form-control" id="editLeadCompany">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Service</label>
+                                    <select class="form-select" id="editLeadService" required>
+                                        <option value="app_development">App Development</option>
+                                        <option value="digital_marketing">Digital Marketing</option>
+                                        <option value="custom_software">Custom Software</option>
+                                        <option value="seo_services">SEO Services</option>
+                                        <option value="whatsapp_marketing">WhatsApp Marketing</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <select class="form-select" id="editLeadStatus" required>
+                                        <option value="new">New</option>
+                                        <option value="contacted">Contacted</option>
+                                        <option value="qualified">Qualified</option>
+                                        <option value="proposal_sent">Proposal Sent</option>
+                                        <option value="won">Won</option>
+                                        <option value="lost">Lost</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Budget</label>
+                                    <input type="text" class="form-control" id="editLeadBudget">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Timeline</label>
+                                    <input type="text" class="form-control" id="editLeadTimeline">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Message</label>
+                            <textarea class="form-control" id="editLeadMessage" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Notes</label>
+                            <textarea class="form-control" id="editLeadNotes" rows="3" placeholder="Add notes about this lead"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveEditedLead()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Campaign Modal -->
+    <div class="modal fade" id="addCampaignModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create New Campaign</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCampaignForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Campaign Key</label>
+                                    <input type="text" class="form-control" id="campaignKey" placeholder="e.g., summer_promo" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Campaign Name</label>
+                                    <input type="text" class="form-control" id="campaignName" placeholder="Summer Promotion Campaign" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Start Date</label>
+                                    <input type="date" class="form-control" id="campaignStartDate" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">End Date</label>
+                                    <input type="date" class="form-control" id="campaignEndDate" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Target Audience</label>
+                                    <select class="form-select" id="campaignAudience" multiple>
+                                        <option value="startups">Startups</option>
+                                        <option value="small_business">Small Business</option>
+                                        <option value="enterprise">Enterprise</option>
+                                        <option value="ecommerce">E-commerce</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Campaign ID</label>
+                                    <input type="text" class="form-control" id="campaignId" placeholder="summer_promo_2024">
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="campaignActive" checked>
+                                        <label class="form-check-label" for="campaignActive">
+                                            Active Campaign
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Campaign Images</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="campaignBannerImage" placeholder="Banner image filename">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="campaignServiceImage" placeholder="Service image filename">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="addCampaign()">Create Campaign</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Configuration and Core System -->
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/plugins/plugin-manager.js"></script>
+    <script src="assets/js/plugins/adapters/local-upload-adapter.js"></script>
+    <script src="assets/js/plugins/adapters/local-storage-adapter.js"></script>
+    <script src="assets/js/plugins/adapters/local-processing-adapter.js"></script>
+    <script src="assets/js/plugins/adapters/placeholder-adapters.js"></script>
+    <script src="assets/js/image-management-core.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="assets/js/security.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/lead-management.js"></script>
+    <script src="assets/js/image-management-ui.js"></script>
+</body>
+</html> 

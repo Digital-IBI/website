@@ -1,0 +1,356 @@
+
+
+
+/*===========================
+    14.CLIENTS css 
+===========================*/
+
+
+
+.infetech-clients-area{
+    padding-top: 115px;
+    background-image: url(../images/client-bg-line.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+.clients-tabs-item{
+    & ul.nav{
+        display: flex;
+        justify-content: center;
+        column-gap: 30px;
+        flex-wrap: nowrap;
+        @media #{$md} {
+            flex-wrap: wrap;
+        }
+        @media #{$xs} {
+            flex-wrap: wrap;
+        }
+        & li{
+            & button{
+                background: $white;
+                padding: 50px 0 45px;
+                box-shadow: 0px 10px 60px 0px rgba(0, 0, 0, 0.07);
+                text-align: center;
+                width: 210px;
+                @media #{$lg} {
+                    width: 170px;
+                }
+                @media #{$md} {
+                    margin-top: 0 !important;
+                    margin-bottom: 30px;
+                }
+                @media #{$xs} {
+                    margin-top: 0 !important;
+                    margin-bottom: 30px;
+                }
+                & span{
+                    display: block;
+                    font-weight: 800;
+                    color: $black;
+                    font-size: 20px;
+                    margin-top: 5px;
+                }
+
+                &.active{
+                    background: #1d1729;
+                    background-image: url(../images/client-item-line.png);
+                    background-size: auto;
+                    background-position: top right;
+                    background-repeat: no-repeat;
+                    position: relative;
+                    &::before{
+                        position: absolute;
+                        content: '';
+                        left: 50%;
+                        top: 100%;
+                        transform: translateX(-50%);
+                        width: 0;
+                        height: 0;
+                        border-left: 20px solid transparent;
+                        border-right: 20px solid transparent;
+                        border-top: 20px solid #1d1729;
+                    }
+                    &::after{
+                        position: absolute;
+                        content: '\f078';
+                        font-weight: 300;
+                        left: 50%;
+                        top: 96%;
+                        transform: translateX(-50%);
+                        font-size: 14px;
+                        color: #fff;
+                        font-family: "Font Awesome 5 Pro";
+                    }
+                    & span{
+                        color: $white;
+                    }
+                    & svg{
+                        fill: $theme-color;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+.clients-content-box{
+    & .title{
+        font-size: 30px;
+        color: $black;
+        margin-bottom: 22px;
+    }
+    & p{
+        font-size: 16px;
+        color: #6c6a72;
+        line-height: 30px;
+        margin-bottom: 32px;
+    }
+    & a{
+        border: 1px solid $theme-color-2;
+    }
+}
+
+
+
+.infetech-clients-3-area{
+    padding-top: 112px;
+    padding-bottom: 120px;
+    background: #f2f0f7;
+    @media #{$xs} {
+        padding-top: 60px;
+        padding-bottom: 150px;
+    }
+}
+
+
+.single-service-3-item{
+    &.clients-3-item{
+        margin: 3px;
+        box-shadow:none;
+        padding: 45px 95px 45px 50px;
+        @media #{$lg} {
+            padding: 45px 50px 45px 50px;
+        }
+        @media #{$md} {
+            padding: 45px 50px 45px 50px;
+        }
+        @media #{$xs} {
+            padding: 30px;
+        }
+        @media #{$sm} {
+            padding: 45px 50px 45px 50px;
+        }
+        &::before{
+            right: 50px;
+            bottom: 50px;
+            top: inherit;
+            background: #f4ecff;
+            height: 65px;
+            width: 65px;
+            border-radius: 50%;
+            transition: all linear 0.3s;
+            @media #{$lg} {
+                display: none;
+            }
+            @media #{$md} {
+                display: none;
+            }
+            @media #{$xs} {
+                display: none;
+            }
+        }
+        &::after{
+            display: none;
+        }
+        & .title{
+            font-size: 24px;
+            text-transform: capitalize;
+            margin-bottom: 35px;
+            @media #{$lg} {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+            @media #{$md} {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+            @media #{$xs} {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+        }
+        & .icon{
+            position: absolute;
+            right: 30px;
+            bottom: 30px;
+            @media #{$lg} {
+                position: static;
+                margin-top: 10px;
+            }
+            @media #{$md} {
+                position: static;
+                margin-top: 10px;
+            }
+            @media #{$xs} {
+                position: static;
+                margin-top: 10px;
+            }
+            & svg{
+                transition: all linear 0.3s;
+            }
+        }
+        &:hover{
+            &::before{
+                background: #6c3af0;
+            }
+            & .icon{
+                & svg{
+                    fill: #fff;
+                }
+            }
+        }
+    }
+}
+
+
+
+.faq-box-area{
+    position: relative;
+    z-index: 10;
+    margin-top: -60px;
+    @media #{$xs} {
+        background: #f2f0f7;
+    }
+    & .faq-box-item{
+        padding: 30px 30px 30px 60px;
+        background: $theme-color;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        @media #{$md} {
+            padding: 30px;
+            display: block;
+            text-align: center;
+        }
+        @media #{$xs} {
+            padding: 30px;
+            display: block;
+            text-align: center;
+        }
+        & .title{
+            font-size: 18px;
+            color: $white;
+            @media #{$md} {
+                margin-bottom: 25px;
+            }
+            @media #{$xs} {
+                margin-bottom: 25px;
+            }
+        }
+        & a{
+            background: $white;
+            color: $black;
+            line-height: 60px;
+            &:hover{
+                background: $theme-color-2;
+                color: $white;
+            }
+        }
+    }
+}
+
+
+
+.infetech-clients-4-area{
+    padding-top: 114px;
+    padding-bottom: 120px;
+    @media #{$md} {
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+    @media #{$xs} {
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+}
+
+.clients-4-item{
+    background-image: url(../images/clients-item-bg.png);
+    padding: 40px 45px 40px 40px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0px 10px 60px 0px rgba(0, 0, 0, 0.07);
+    transition: all linear 0.3s;
+    @media #{$lg} {
+        padding: 30px 25px;
+    }
+    @media #{$md} {
+        margin-bottom: 30px;
+    }
+    @media #{$xs} {
+        margin-bottom: 30px;
+    }
+    &::before{
+        position: absolute;
+        content: '';
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        background: $white;
+        z-index: -1;
+        transition: all linear 0.3s;
+
+    }
+    & .title{
+        font-size: 20px;
+        transition: all linear 0.3s;
+    }
+    & p{
+        color: #6c6a72;
+        font-weight: 500;
+        line-height: 30px;
+        margin: 14px 0 20px;
+        transition: all linear 0.3s;
+    }
+    & .icon{
+        background: $theme-color-2;
+        height: 100px;
+        width: 100px;
+        text-align: center;
+        line-height: 100px;
+        border-radius: 50%;
+        display: inline-block;
+        transition: all linear 0.3s;
+        & svg{
+            transition: all linear 0.3s;
+        }
+
+    }
+    &:hover{
+        box-shadow: none;
+        &::before{
+            opacity: 0;
+        }
+        & .title{
+            color: $white;
+        }
+        & p{
+            color: $white;
+        }
+        & .icon{
+            background: $white;
+            & svg{
+                fill: $theme-color-2;
+            }
+        }
+    }
+}
+
