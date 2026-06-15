@@ -105,7 +105,6 @@ def run_analyze(args, config: Config) -> None:
     from .personality_analyzer import analyze_all_characters
     from .segment_selector import score_all_scenes, find_reel_segments
     from .reel_generator import generate_all_reels
-    from .explainer_generator import select_explainer_scenes, build_explainer_timeline, render_explainer
 
     movie_path = args.movie
     checkpoint_path = config.OUTPUT_DIR / "analysis_report.json"
@@ -235,17 +234,36 @@ def run_analyze(args, config: Config) -> None:
             arc_results, scenes, movie_path, characters, local_llm, config, total_duration
         )
 
-    # ── 12. Generate explainer ──
+    # ── 12. Movie structure analysis (central theme, acts, character roles) ──
+    from .movie_analyst import analyse_movie_structure
+    from .explainer_generator import (
+        select_explainer_scenes, build_and_render_explainer,
+    )
+
+    structure = None
     if not args.skip_explainer:
-        explainer_scenes = select_explainer_scenes(scenes, config.EXPLAINER_TARGET_MIN, total_duration)
-        timeline = build_explainer_timeline(
-            explainer_scenes, scenes, characters, local_llm, config, total_duration
+        structure = analyse_movie_structure(scenes, characters, local_llm, total_duration)
+        logger.info(f"Central theme: {structure.central_theme}")
+        logger.info(f"Genre: {structure.genre} | Tone: {structure.tone}")
+        logger.info(f"Acts: {[a.title for a in structure.acts]}")
+        logger.info(f"Key turning points: {structure.key_turning_points}")
+
+    # ── 13. Generate explainer ──
+    if not args.skip_explainer and structure is not None:
+        target_secs = args.explainer_duration * 60
+        explainer_scenes = select_explainer_scenes(
+            scenes, structure, target_secs, total_duration
         )
         explainer_path = str(config.OUTPUT_DIR / "explainer.mp4")
-        render_explainer(timeline, movie_path, characters, config, explainer_path)
+        build_and_render_explainer(
+            explainer_scenes, scenes, characters, structure,
+            movie_path, config, explainer_path, total_duration,
+            add_character_intros=(not args.skip_character_intros),
+        )
 
     logger.info("Analysis complete!")
     logger.info(f"  Output:     {config.OUTPUT_DIR}/")
+    logger.info(f"  Characters: {config.CHARACTERS_DIR}/")
     logger.info(f"  Reels:      {config.REELS_DIR}/")
     logger.info(f"  Arc reels:  {config.REELS_DIR}/*_arc.mp4")
     logger.info(f"  Explainer:  {config.OUTPUT_DIR}/explainer.mp4")
@@ -309,7 +327,8 @@ def run_reels(args, config: Config) -> None:
 
 def run_explainer(args, config: Config) -> None:
     """Re-generate explainer from an existing analysis checkpoint."""
-    from .explainer_generator import select_explainer_scenes, build_explainer_timeline, render_explainer
+    from .movie_analyst import analyse_movie_structure
+    from .explainer_generator import select_explainer_scenes, build_and_render_explainer
     from .data_models import Scene
 
     checkpoint_path = config.OUTPUT_DIR / "analysis_report.json"
@@ -334,9 +353,15 @@ def run_explainer(args, config: Config) -> None:
         scenes.append(s)
 
     total_duration = data.get("total_duration", 7200)
-    explainer_scenes = select_explainer_scenes(scenes, config.EXPLAINER_TARGET_MIN, total_duration)
-    timeline = build_explainer_timeline(explainer_scenes, scenes, [], None, config, total_duration)
-    render_explainer(timeline, args.movie, [], config, str(config.OUTPUT_DIR / "explainer.mp4"))
+    target_secs = getattr(args, "explainer_duration", 20.0) * 60
+
+    structure = analyse_movie_structure(scenes, [], None, total_duration)
+    explainer_scenes = select_explainer_scenes(scenes, structure, target_secs, total_duration)
+    build_and_render_explainer(
+        explainer_scenes, scenes, [], structure,
+        args.movie, config, str(config.OUTPUT_DIR / "explainer.mp4"),
+        total_duration, add_character_intros=False,
+    )
 
 
 # ─── CLI ─────────────────────────────────────────────────────────────────────
@@ -377,6 +402,10 @@ def build_parser() -> argparse.ArgumentParser:
     p_analyze.add_argument("--arc-threshold", type=float, default=0.45,
                            help="Semantic clustering distance threshold (lower=tighter clusters)")
     p_analyze.add_argument("--skip-explainer", action="store_true")
+    p_analyze.add_argument("--explainer-duration", type=float, default=20.0,
+                           help="Target explainer duration in minutes (default: 20, range 15-25)")
+    p_analyze.add_argument("--skip-character-intros", action="store_true",
+                           help="Skip character introduction montage at start of explainer")
     p_analyze.add_argument("--resume", action="store_true",
                            help="Resume from existing checkpoint")
     p_analyze.add_argument("--cloud-ai", action="store_true",
