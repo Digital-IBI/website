@@ -58,6 +58,13 @@ rich>=13.7.0
 pydantic>=2.7.0
 tenacity>=8.3.0
 
+# ── REST API ──────────────────────────────────────────────────────────────────
+# Run: uvicorn movie_analyzer.api.app:app --host 0.0.0.0 --port 8000 --reload
+fastapi>=0.111.0
+uvicorn[standard]>=0.29.0
+aiosqlite>=0.20.0
+python-multipart>=0.0.9        # form upload support
+
 # ── Optional: cloud AI fallback ───────────────────────────────────────────────
 # anthropic>=0.34.0           # only needed with --cloud-ai flag
 
