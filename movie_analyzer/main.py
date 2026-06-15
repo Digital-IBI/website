@@ -205,10 +205,34 @@ def run_analyze(args, config: Config) -> None:
         "stage": "complete",
     }, checkpoint_path)
 
-    # ── 11. Generate reels ──
+    # ── 11. Generate contiguous reels ──
     if not args.skip_reels:
         segments = generate_all_reels(
             segments, scenes, movie_path, characters, local_llm, config, total_duration
+        )
+
+    # ── 11b. Narrative arc reels (non-contiguous story threads) ──
+    if not args.skip_arc_reels:
+        from .story_arc_detector import find_best_arc_threads
+        from .arc_reel_generator import generate_all_arc_reels
+
+        arc_results = find_best_arc_threads(
+            scenes,
+            characters,
+            local_llm,
+            target_duration=args.arc_reel_duration,
+            max_threads=args.max_arc_reels,
+            distance_threshold=args.arc_threshold,
+        )
+        logger.info(f"Found {len(arc_results)} narrative arc threads")
+        for thread, arc_scenes in arc_results:
+            logger.info(
+                f"  '{thread.topic}': {len(arc_scenes)} scenes, "
+                f"{thread.time_span_minutes:.0f} min span, "
+                f"coherence={thread.coherence_score:.3f}"
+            )
+        generate_all_arc_reels(
+            arc_results, scenes, movie_path, characters, local_llm, config, total_duration
         )
 
     # ── 12. Generate explainer ──
@@ -221,9 +245,10 @@ def run_analyze(args, config: Config) -> None:
         render_explainer(timeline, movie_path, characters, config, explainer_path)
 
     logger.info("Analysis complete!")
-    logger.info(f"  Output: {config.OUTPUT_DIR}/")
-    logger.info(f"  Reels:  {config.REELS_DIR}/")
-    logger.info(f"  Explainer: {config.OUTPUT_DIR}/explainer.mp4")
+    logger.info(f"  Output:     {config.OUTPUT_DIR}/")
+    logger.info(f"  Reels:      {config.REELS_DIR}/")
+    logger.info(f"  Arc reels:  {config.REELS_DIR}/*_arc.mp4")
+    logger.info(f"  Explainer:  {config.OUTPUT_DIR}/explainer.mp4")
 
 
 def run_reels(args, config: Config) -> None:
@@ -343,6 +368,14 @@ def build_parser() -> argparse.ArgumentParser:
     p_analyze.add_argument("--skip-llm", action="store_true",
                            help="Skip all LLM tasks (purely signal-based scoring)")
     p_analyze.add_argument("--skip-reels", action="store_true")
+    p_analyze.add_argument("--skip-arc-reels", action="store_true",
+                           help="Skip narrative arc reel generation")
+    p_analyze.add_argument("--arc-reel-duration", type=float, default=60.0,
+                           help="Target duration (seconds) for each arc reel (default: 60)")
+    p_analyze.add_argument("--max-arc-reels", type=int, default=8,
+                           help="Maximum number of arc reels to generate (default: 8)")
+    p_analyze.add_argument("--arc-threshold", type=float, default=0.45,
+                           help="Semantic clustering distance threshold (lower=tighter clusters)")
     p_analyze.add_argument("--skip-explainer", action="store_true")
     p_analyze.add_argument("--resume", action="store_true",
                            help="Resume from existing checkpoint")

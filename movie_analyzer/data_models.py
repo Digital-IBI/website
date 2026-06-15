@@ -85,6 +85,23 @@ class ReelSegment:
 
 
 @dataclass
+class ArcPhases:
+    setup: list[int]
+    development: list[int]
+    resolution: list[int]
+
+
+@dataclass
+class NarrativeThread:
+    thread_id: str
+    topic: str
+    scene_ids: list[int]
+    arc_phases: "ArcPhases"
+    coherence_score: float
+    time_span_minutes: float
+
+
+@dataclass
 class MovieAnalysis:
     movie_path: str
     movie_title: Optional[str]
