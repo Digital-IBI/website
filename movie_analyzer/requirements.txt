@@ -1,0 +1,49 @@
+# ── Video processing ──────────────────────────────────────────────────────────
+scenedetect[opencv]==0.6.4
+moviepy==1.0.3
+ffmpeg-python==0.2.0
+opencv-python==4.9.0.80
+
+# ── Audio ─────────────────────────────────────────────────────────────────────
+openai-whisper==20231117
+torch>=2.0.0
+torchaudio>=2.0.0
+librosa>=0.10.2
+soundfile>=0.12.1
+
+# ── Vision + NLP models (HuggingFace) ────────────────────────────────────────
+# BLIP-2: scene captioning (~10GB model, auto-downloaded)
+transformers>=4.40.0
+accelerate>=0.30.0
+# bitsandbytes>=0.43.0   # uncomment for 8-bit quantization on GPU
+sentence-transformers>=3.0.0
+sentencepiece>=0.2.0
+
+# ── Face detection + clustering ───────────────────────────────────────────────
+deepface==0.0.93
+tf-keras>=2.16.0
+scikit-learn>=1.4.0
+
+# ── Local LLM ─────────────────────────────────────────────────────────────────
+# Option A: ollama client (requires ollama server: https://ollama.ai)
+ollama>=0.2.0
+# Option B: transformers (Phi-3-mini auto-downloaded, ~7GB)
+# No extra install needed — already covered by transformers above
+
+# ── Text-to-speech ────────────────────────────────────────────────────────────
+TTS==0.22.0          # Coqui TTS — fully local, high quality
+gTTS==2.5.1          # Google TTS fallback (requires internet)
+
+# ── Image processing ──────────────────────────────────────────────────────────
+Pillow>=10.3.0
+numpy>=1.26.0
+
+# ── Utilities ─────────────────────────────────────────────────────────────────
+python-dotenv==1.0.1
+tqdm==4.66.4
+rich>=13.7.1
+pydantic>=2.7.0
+tenacity>=8.3.0
+
+# ── Optional: cloud AI fallback ───────────────────────────────────────────────
+# anthropic>=0.34.0   # uncomment only if using --cloud-ai flag
