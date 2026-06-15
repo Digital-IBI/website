@@ -18,13 +18,14 @@ def load_blip2_model(config: Config):
     import torch
     from transformers import Blip2Processor, Blip2ForConditionalGeneration
 
-    logger.info(f"Loading BLIP-2 model: {config.BLIP2_MODEL}")
+    model_name = config.auto_blip2_model()
+    logger.info(f"Loading BLIP-2 model: {model_name} (VRAM auto-selected)")
     device = "cuda" if torch.cuda.is_available() else "cpu"
     dtype = torch.float16 if device == "cuda" else torch.float32
 
-    processor = Blip2Processor.from_pretrained(config.BLIP2_MODEL)
+    processor = Blip2Processor.from_pretrained(model_name)
     model = Blip2ForConditionalGeneration.from_pretrained(
-        config.BLIP2_MODEL,
+        model_name,
         torch_dtype=dtype,
         device_map="auto" if device == "cuda" else None,
     )

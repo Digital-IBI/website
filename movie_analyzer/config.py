@@ -26,9 +26,28 @@ class Config:
     WHISPER_LANGUAGE: str | None = os.getenv("WHISPER_LANGUAGE", None)
     AUDIO_CHUNK_MINUTES: int = 10
 
-    # BLIP-2 scene captioning
-    BLIP2_MODEL: str = os.getenv("BLIP2_MODEL", "Salesforce/blip2-opt-2.7b")
+    # BLIP-2 scene captioning (auto-selects model based on available VRAM)
     BLIP2_DEVICE: str = os.getenv("BLIP2_DEVICE", "auto")
+    BLIP2_MODEL: str = os.getenv("BLIP2_MODEL", "")  # empty = auto-select below
+
+    @classmethod
+    def auto_blip2_model(cls) -> str:
+        """Pick BLIP-2 model based on available GPU VRAM."""
+        if cls.BLIP2_MODEL:
+            return cls.BLIP2_MODEL
+        try:
+            import torch
+            if torch.cuda.is_available():
+                vram_gb = torch.cuda.get_device_properties(0).total_memory / 1024 ** 3
+                if vram_gb >= 12:
+                    return "Salesforce/blip2-opt-2.7b"      # 12GB+: best quality
+                elif vram_gb >= 8:
+                    return "Salesforce/blip2-flan-t5-xl"    # 8GB: good quality
+                else:
+                    return "Salesforce/blip2-flan-t5-base"  # 4-8GB: lighter model
+        except Exception:
+            pass
+        return "Salesforce/blip2-flan-t5-base"  # CPU fallback (slow but works)
 
     # Emotion analysis
     EMOTION_MODEL: str = "j-hartmann/emotion-english-distilroberta-base"
