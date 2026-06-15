@@ -32,21 +32,36 @@ def get_video_metadata(movie_path: str) -> dict:
 def detect_scenes(movie_path: str, config: Config) -> list[Scene]:
     """Detect scene boundaries using PySceneDetect ContentDetector."""
     try:
-        from scenedetect import VideoManager, SceneManager
+        from scenedetect import open_video, SceneManager
         from scenedetect.detectors import ContentDetector
+        _use_new_api = True
     except ImportError:
-        raise ImportError("Install scenedetect: pip install scenedetect[opencv]")
+        try:
+            from scenedetect import VideoManager, SceneManager
+            from scenedetect.detectors import ContentDetector
+            _use_new_api = False
+        except ImportError:
+            raise ImportError("Install scenedetect: pip install 'scenedetect[opencv]'")
 
     logger.info(f"Detecting scenes in {movie_path}...")
-    video_manager = VideoManager([movie_path])
-    scene_manager = SceneManager()
-    scene_manager.add_detector(ContentDetector(threshold=config.SCENE_THRESHOLD))
 
-    video_manager.set_downscale_factor()
-    video_manager.start()
-    scene_manager.detect_scenes(frame_source=video_manager)
-    scene_list = scene_manager.get_scene_list()
-    video_manager.release()
+    if _use_new_api:
+        # New API: scenedetect >= 0.6.2
+        video = open_video(movie_path)
+        scene_manager = SceneManager()
+        scene_manager.add_detector(ContentDetector(threshold=config.SCENE_THRESHOLD))
+        scene_manager.detect_scenes(video)
+        scene_list = scene_manager.get_scene_list()
+    else:
+        # Legacy API: scenedetect < 0.6.2
+        video_manager = VideoManager([movie_path])
+        scene_manager = SceneManager()
+        scene_manager.add_detector(ContentDetector(threshold=config.SCENE_THRESHOLD))
+        video_manager.set_downscale_factor()
+        video_manager.start()
+        scene_manager.detect_scenes(frame_source=video_manager)
+        scene_list = scene_manager.get_scene_list()
+        video_manager.release()
 
     scenes = []
     for i, (start, end) in enumerate(scene_list):

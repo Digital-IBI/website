@@ -316,6 +316,7 @@ def build_and_render_explainer(
     config: Config,
     output_path: str,
     total_movie_duration: float,
+    local_llm=None,
     add_character_intros: bool = True,
 ) -> str:
     """
@@ -337,7 +338,7 @@ def build_and_render_explainer(
     selected_ids: set[int] = {s.scene_id for s in selected_scenes}
     char_by_id: dict[str, Character] = {c.character_id: c for c in characters}
     char_names: dict[str, str] = {c.character_id: (c.name or c.character_id) for c in characters}
-    narration_engine = NarrationEngine(config, None, characters, structure)
+    narration_engine = NarrationEngine(config, local_llm, characters, structure)
 
     logger.info("Building explainer timeline...")
 

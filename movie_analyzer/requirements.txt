@@ -1,49 +1,113 @@
 # ── Video processing ──────────────────────────────────────────────────────────
-scenedetect[opencv]==0.6.4
-moviepy==1.0.3
-ffmpeg-python==0.2.0
-opencv-python==4.9.0.80
+# PySceneDetect: use >= 0.6.2 for the new open_video() API (old VideoManager removed)
+scenedetect[opencv]>=0.6.2
 
-# ── Audio ─────────────────────────────────────────────────────────────────────
-openai-whisper==20231117
+# moviepy: 1.0.3 is the last stable release. TextClip REQUIRES imagemagick installed
+# on the system (apt install imagemagick / brew install imagemagick).
+# If text overlays fail, see KNOWN ISSUES below.
+moviepy==1.0.3
+
+ffmpeg-python>=0.2.0
+opencv-python>=4.8.0
+
+# ── Audio & transcription ─────────────────────────────────────────────────────
+# RECOMMENDED: faster-whisper is 4x faster and uses less RAM than openai-whisper
+# Uses CTranslate2 backend. Uncomment one:
+faster-whisper>=1.0.0          # RECOMMENDED (4x faster, half the RAM)
+# openai-whisper>=20231117     # Original — slower, more RAM, but more compatible
+
 torch>=2.0.0
 torchaudio>=2.0.0
-librosa>=0.10.2
+librosa>=0.10.1
 soundfile>=0.12.1
 
-# ── Vision + NLP models (HuggingFace) ────────────────────────────────────────
-# BLIP-2: scene captioning (~10GB model, auto-downloaded)
+# ── Vision + NLP models ───────────────────────────────────────────────────────
+# BLIP-2 requires ~8GB VRAM on GPU. On CPU: expect 2-5 minutes per scene (too slow).
+# For CPU-only machines, consider blip2-flan-t5-xl or skip captions (--skip-captions).
 transformers>=4.40.0
 accelerate>=0.30.0
-# bitsandbytes>=0.43.0   # uncomment for 8-bit quantization on GPU
 sentence-transformers>=3.0.0
 sentencepiece>=0.2.0
+Pillow>=10.3.0
+numpy>=1.26.0
 
 # ── Face detection + clustering ───────────────────────────────────────────────
-deepface==0.0.93
+# deepface version varies — use >=0.0.80 to avoid pin to a non-existent release
+deepface>=0.0.80
 tf-keras>=2.16.0
 scikit-learn>=1.4.0
 
 # ── Local LLM ─────────────────────────────────────────────────────────────────
-# Option A: ollama client (requires ollama server: https://ollama.ai)
+# Option A (RECOMMENDED): run ollama server locally, then: ollama pull llama3.2:3b
 ollama>=0.2.0
-# Option B: transformers (Phi-3-mini auto-downloaded, ~7GB)
-# No extra install needed — already covered by transformers above
+# Option B: transformers (Phi-3-mini, ~7GB download, slow on CPU)
+# No extra install needed — already covered by transformers above.
 
 # ── Text-to-speech ────────────────────────────────────────────────────────────
-TTS==0.22.0          # Coqui TTS — fully local, high quality
-gTTS==2.5.1          # Google TTS fallback (requires internet)
-
-# ── Image processing ──────────────────────────────────────────────────────────
-Pillow>=10.3.0
-numpy>=1.26.0
+# Coqui TTS (TTS package): project was shut down Jan 2024, last version 0.22.0.
+# Still installable but no longer maintained. May have install conflicts.
+# ALTERNATIVE: use kokoro-onnx (fast, MIT licensed, actively maintained)
+TTS==0.22.0                    # Coqui — local, high quality, unmaintained
+# kokoro-onnx>=0.3.0           # ALTERNATIVE — faster, maintained, needs: pip install kokoro-onnx
+gTTS>=2.5.0                    # Google TTS fallback (requires internet)
 
 # ── Utilities ─────────────────────────────────────────────────────────────────
-python-dotenv==1.0.1
-tqdm==4.66.4
-rich>=13.7.1
+python-dotenv>=1.0.1
+tqdm>=4.66.0
+rich>=13.7.0
 pydantic>=2.7.0
 tenacity>=8.3.0
 
 # ── Optional: cloud AI fallback ───────────────────────────────────────────────
-# anthropic>=0.34.0   # uncomment only if using --cloud-ai flag
+# anthropic>=0.34.0           # only needed with --cloud-ai flag
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SYSTEM DEPENDENCIES (install separately, NOT via pip):
+# ───────────────────────────────────────────────────────────────────────────────
+#   ffmpeg          — required by moviepy, ffmpeg-python, scenedetect
+#                     Ubuntu: sudo apt install ffmpeg
+#                     Mac:    brew install ffmpeg
+#
+#   imagemagick     — required by moviepy TextClip (text overlays)
+#                     Ubuntu: sudo apt install imagemagick
+#                     Mac:    brew install imagemagick
+#                     ⚠ On Ubuntu, you may also need to edit ImageMagick policy.xml
+#                       to allow PDF/text: change <policy domain="coder" rights="none" pattern="PDF">
+#                       to rights="read|write"
+#
+#   libsndfile1     — required by librosa / soundfile
+#                     Ubuntu: sudo apt install libsndfile1
+#
+# ═══════════════════════════════════════════════════════════════════════════════
+# MODELS DOWNLOADED AUTOMATICALLY ON FIRST RUN (sizes):
+# ───────────────────────────────────────────────────────────────────────────────
+#   Whisper base              ~150 MB   (via faster-whisper: auto-download)
+#   Whisper small             ~480 MB
+#   Whisper medium            ~1.5 GB   (recommended for accuracy)
+#   BLIP-2 (blip2-opt-2.7b)  ~10 GB    (GPU strongly recommended)
+#   emotion model             ~300 MB   (j-hartmann/emotion-english-distilroberta-base)
+#   sentence-transformers     ~90 MB    (all-MiniLM-L6-v2)
+#   Phi-3-mini (if no ollama) ~7 GB
+#   DeepFace Facenet512       ~90 MB    (auto-download by deepface)
+#   Coqui TTS model           ~200 MB   (auto-download on first TTS call)
+#
+# ═══════════════════════════════════════════════════════════════════════════════
+# KNOWN ISSUES:
+# ───────────────────────────────────────────────────────────────────────────────
+#   1. moviepy TextClip failures: if you see "MoviePy error: creation of None"
+#      → install imagemagick AND check its policy.xml allows text rendering
+#      → OR run with --skip-text-overlays flag (falls back to ffmpeg drawtext)
+#
+#   2. BLIP-2 on CPU is extremely slow (~2-5 min/scene → days for 2h movie)
+#      → Use --skip-captions on CPU-only machines; add captions separately on GPU
+#
+#   3. TTS install conflict: if `pip install TTS` fails due to numpy/torch conflicts
+#      → Try: pip install TTS --no-deps, then install deps manually
+#      → OR switch to kokoro-onnx (pip install kokoro-onnx)
+#
+#   4. deepface first run downloads multiple models (~500MB total)
+#      → Expected on first use; subsequent runs use cache (~/.deepface/)
+#
+#   5. faster-whisper needs: pip install faster-whisper
+#      The transcript_processor.py currently uses openai-whisper API.
+#      If using faster-whisper, update WHISPER_BACKEND=faster in .env

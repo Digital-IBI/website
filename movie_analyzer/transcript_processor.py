@@ -13,21 +13,49 @@ from .utils.logging_setup import logger
 
 
 def _transcribe_chunk(args: tuple[str, str, str, float]) -> list[dict]:
-    """Worker: transcribe a single audio chunk. Runs in a subprocess."""
+    """
+    Worker: transcribe a single audio chunk. Runs in a subprocess.
+    Tries faster-whisper first (4x faster, half RAM), falls back to openai-whisper.
+    """
     chunk_path, model_name, language, time_offset = args
-    import whisper
-    model = whisper.load_model(model_name)
-    opts = {"language": language} if language else {}
-    result = model.transcribe(chunk_path, **opts, word_timestamps=False)
     segments = []
-    for seg in result.get("segments", []):
-        segments.append({
-            "text": seg["text"].strip(),
-            "start": seg["start"] + time_offset,
-            "end": seg["end"] + time_offset,
-            "confidence": seg.get("avg_logprob", 0.0),
-        })
-    return segments
+
+    # Try faster-whisper first
+    try:
+        from faster_whisper import WhisperModel
+        model = WhisperModel(model_name, device="auto", compute_type="auto")
+        segs, _ = model.transcribe(chunk_path, language=language, beam_size=5)
+        for seg in segs:
+            segments.append({
+                "text": seg.text.strip(),
+                "start": seg.start + time_offset,
+                "end": seg.end + time_offset,
+                "confidence": seg.avg_logprob if hasattr(seg, "avg_logprob") else 0.0,
+            })
+        return segments
+    except ImportError:
+        pass  # fall through to openai-whisper
+
+    # Fallback: openai-whisper
+    try:
+        import whisper
+        model = whisper.load_model(model_name)
+        opts = {"language": language} if language else {}
+        result = model.transcribe(chunk_path, **opts, word_timestamps=False)
+        for seg in result.get("segments", []):
+            segments.append({
+                "text": seg["text"].strip(),
+                "start": seg["start"] + time_offset,
+                "end": seg["end"] + time_offset,
+                "confidence": seg.get("avg_logprob", 0.0),
+            })
+        return segments
+    except ImportError:
+        raise ImportError(
+            "No Whisper backend found. Install one of:\n"
+            "  pip install faster-whisper   (recommended)\n"
+            "  pip install openai-whisper"
+        )
 
 
 def transcribe_movie(audio_path: str, config: Config) -> list[DialogueLine]:
@@ -36,10 +64,16 @@ def transcribe_movie(audio_path: str, config: Config) -> list[DialogueLine]:
     Returns flat list of DialogueLine sorted by start_time.
     """
     try:
-        import whisper  # noqa: F401
+        import faster_whisper  # noqa: F401
     except ImportError:
-        raise ImportError("Install whisper: pip install openai-whisper")
-
+        try:
+            import whisper  # noqa: F401
+        except ImportError:
+            raise ImportError(
+                "No Whisper backend found. Install one of:\n"
+                "  pip install faster-whisper   (recommended)\n"
+                "  pip install openai-whisper"
+            )
     chunk_dir = config.AUDIO_DIR / "chunks"
     chunk_dir.mkdir(parents=True, exist_ok=True)
 
@@ -67,10 +101,14 @@ def transcribe_movie(audio_path: str, config: Config) -> list[DialogueLine]:
             )
         chunk_args.append((chunk_path, config.WHISPER_MODEL, config.WHISPER_LANGUAGE, start))
 
-    logger.info(f"Transcribing {n_chunks} chunks with Whisper ({config.WHISPER_MODEL})...")
+    # Cap Whisper workers: each model instance uses 150MB-3GB RAM depending on size.
+    # base=150MB, small=480MB, medium=3GB. Max 4 workers regardless of CPU count.
+    whisper_workers = min(config.CPU_WORKERS, 4)
+    logger.info(f"Transcribing {n_chunks} chunks with Whisper ({config.WHISPER_MODEL}), "
+                f"{whisper_workers} workers...")
     all_segments: list[dict] = []
 
-    with ProcessPoolExecutor(max_workers=config.CPU_WORKERS) as pool:
+    with ProcessPoolExecutor(max_workers=whisper_workers) as pool:
         for chunk_segs in pool.map(_transcribe_chunk, chunk_args):
             all_segments.extend(chunk_segs)
 

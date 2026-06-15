@@ -11,7 +11,6 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from dataclasses import asdict
 from pathlib import Path
 
 from .config import Config
@@ -258,6 +257,7 @@ def run_analyze(args, config: Config) -> None:
         build_and_render_explainer(
             explainer_scenes, scenes, characters, structure,
             movie_path, config, explainer_path, total_duration,
+            local_llm=local_llm,
             add_character_intros=(not args.skip_character_intros),
         )
 
@@ -359,8 +359,12 @@ def run_explainer(args, config: Config) -> None:
     explainer_scenes = select_explainer_scenes(scenes, structure, target_secs, total_duration)
     build_and_render_explainer(
         explainer_scenes, scenes, [], structure,
-        args.movie, config, str(config.OUTPUT_DIR / "explainer.mp4"),
-        total_duration, add_character_intros=False,
+        local_llm=None,
+        movie_path=args.movie,
+        config=config,
+        output_path=str(config.OUTPUT_DIR / "explainer.mp4"),
+        total_movie_duration=total_duration,
+        add_character_intros=False,
     )
 
 

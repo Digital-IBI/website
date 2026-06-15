@@ -225,7 +225,6 @@ def _add_arc_narration(clips, arc_scenes, characters, thread, local_llm, config)
             f"Characters: {', '.join(chars) or 'unknown'}."
         )
 
-    from .utils.local_llm import LocalLLM
     system = (
         "You write concise, engaging narration for short viral movie clips. "
         "This narration tells the story of a complete narrative arc compressed from "
