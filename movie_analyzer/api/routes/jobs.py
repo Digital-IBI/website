@@ -10,7 +10,7 @@ from ..database import (
     mark_failed, mark_cancelled,
 )
 from ..executor import get_pool, register_cancel, cancel_job, cleanup_cancel
-from ..pipeline.runner import run_pipeline
+from ..pipeline.runner import run_pipeline, run_themed_pipeline
 from ..schemas import JobCreate, JobResponse, JobStatus
 
 router = APIRouter(prefix="/jobs", tags=["jobs"])
@@ -46,6 +46,8 @@ async def _execute_job(
     await mark_running(job_id)
 
     def _run():
+        if workflow == "themed_compilation":
+            return run_themed_pipeline(job_id, movie_path, output_dir, options, loop, cancel_ev)
         return run_pipeline(job_id, workflow, movie_path, output_dir, options, loop, cancel_ev)
 
     try:

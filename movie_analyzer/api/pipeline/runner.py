@@ -31,9 +31,124 @@ def _stage_weights(workflow: str) -> dict[str, float]:
         "reel_generation": 8,
         "arc_reel_generation": 6,
         "explainer_generation": 12,
+        "themed_reel_generation": 8,
     }
     total = sum(COSTS.get(s, 3) for s in stages)
     return {s: COSTS.get(s, 3) / total for s in stages}
+
+
+def run_themed_pipeline(
+    job_id: str,
+    movie_path: str,
+    output_dir: str,
+    options: dict[str, Any],
+    loop: asyncio.AbstractEventLoop,
+    cancel_event: threading.Event,
+) -> dict[str, Any]:
+    """Themed compilation runner — reads from an existing checkpoint."""
+    import json
+
+    weights = {"themed_reel_generation": 1.0}
+    cb = ProgressCallback(job_id, loop, weights)
+
+    config = Config()
+    config.OUTPUT_DIR = Path(output_dir)
+    config.FRAMES_DIR = config.OUTPUT_DIR / "frames"
+    config.AUDIO_DIR = config.OUTPUT_DIR / "audio"
+    config.TTS_DIR = config.OUTPUT_DIR / "tts"
+    config.CHARACTERS_DIR = config.OUTPUT_DIR / "characters"
+    config.REELS_DIR = config.OUTPUT_DIR / "reels"
+    config.setup_dirs()
+
+    checkpoint_path = options.get("existing_checkpoint") or str(config.OUTPUT_DIR / "analysis_report.json")
+    cp = Path(checkpoint_path)
+    if not cp.exists():
+        raise FileNotFoundError(
+            f"No analysis checkpoint at {checkpoint_path}. "
+            "Run analyze_only workflow first."
+        )
+
+    data = json.loads(cp.read_text())
+
+    from ...data_models import Scene, DialogueLine
+    from ...themed_reel import ThemeQuery
+    from ...themed_reel_generator import generate_all_themed_reels
+
+    scenes: list[Scene] = []
+    for sd in data.get("scenes", []):
+        s = Scene(
+            scene_id=sd["scene_id"],
+            start_time=sd["start_time"],
+            end_time=sd["end_time"],
+            duration=sd["duration"],
+            keyframe_paths=sd.get("keyframe_paths", []),
+            character_ids=sd.get("character_ids", []),
+            caption=sd.get("caption"),
+            dominant_emotion=sd.get("dominant_emotion"),
+            audio_energy=sd.get("audio_energy"),
+            speech_rate=sd.get("speech_rate"),
+            reel_score=sd.get("reel_score"),
+            reel_score_reason=sd.get("reel_score_reason"),
+            dialogue=[
+                DialogueLine(
+                    speaker_id=dl.get("speaker_id"),
+                    text=dl["text"],
+                    start_time=dl["start_time"],
+                    end_time=dl["end_time"],
+                    confidence=dl.get("confidence", 1.0),
+                    emotions=dl.get("emotions"),
+                )
+                for dl in sd.get("dialogue", [])
+            ],
+        )
+        scenes.append(s)
+
+    total_duration = data.get("total_duration", 7200.0)
+
+    raw_queries = options.get("queries", [])
+    if not raw_queries:
+        raise ValueError("No queries provided. Pass 'queries' in options.")
+
+    queries = [
+        ThemeQuery(
+            theme=q["theme"],
+            character_ids=q.get("character_ids", []),
+            character_filter_mode=q.get("character_filter_mode", "any"),
+            custom_descriptor=q.get("custom_descriptor", ""),
+            min_score=q.get("min_score", 0.25),
+            max_scenes=q.get("max_scenes", 25),
+            target_duration=q.get("target_duration", 90.0),
+            label=q.get("label", ""),
+        )
+        for q in raw_queries
+    ]
+
+    local_llm = None
+    try:
+        from ...utils.local_llm import LocalLLM
+        local_llm = LocalLLM(
+            backend=config.LLM_BACKEND,
+            ollama_model=config.OLLAMA_MODEL,
+            ollama_host=config.OLLAMA_HOST,
+            transformers_model=config.TRANSFORMERS_LLM_MODEL,
+        )
+    except Exception as e:
+        logger.warning(f"Local LLM unavailable: {e}")
+
+    if cancel_event.is_set():
+        raise InterruptedError("Job cancelled")
+
+    cb.stage_start("themed_reel_generation", f"Generating {len(queries)} themed reels")
+    results = generate_all_themed_reels(
+        queries, scenes, [], movie_path, local_llm, config, total_duration
+    )
+    cb.stage_done(f"{len(results)} reels generated")
+
+    outputs: dict[str, Any] = {
+        "themed_reels": {q.display_label(): path for q, path in results},
+    }
+    cb.complete(outputs)
+    return outputs
 
 
 def run_pipeline(

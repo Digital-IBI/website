@@ -10,6 +10,21 @@ class WorkflowPreset(str, Enum):
     full_explainer = "full_explainer"
     full_pipeline = "full_pipeline"
     analyze_only = "analyze_only"
+    themed_compilation = "themed_compilation"
+
+
+class ThemeQuerySchema(BaseModel):
+    theme: str = Field(..., description=(
+        "Built-in theme key or 'custom'. "
+        "Keys: funny, badass, romantic, sexy, scary, sad, action, dramatic, tense, triumphant"
+    ))
+    character_ids: list[str] = Field(default_factory=list, description="Filter to scenes featuring these characters")
+    character_filter_mode: str = Field("any", description="'any' = at least one; 'all' = all must appear (relationships)")
+    custom_descriptor: str = Field("", description="Custom semantic descriptor when theme='custom'")
+    min_score: float = Field(0.25, ge=0.0, le=1.0, description="Minimum theme match score")
+    max_scenes: int = Field(25, ge=1, le=100)
+    target_duration: float = Field(90.0, gt=0, description="Target reel duration in seconds")
+    label: str = Field("", description="Display label for the reel title card")
 
 
 class JobStatus(str, Enum):

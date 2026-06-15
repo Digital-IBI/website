@@ -105,4 +105,18 @@ WORKFLOW_PRESETS: dict[str, dict[str, Any]] = {
             "skip_explainer": True,
         },
     },
+    "themed_compilation": {
+        "label": "Themed Compilation",
+        "description": (
+            "Generate curated theme reels from an existing analysis checkpoint — "
+            "e.g. 'all funny scenes', 'Character A's badass moments', "
+            "'romantic scenes between A and B'. Requires a prior analyze_only run."
+        ),
+        "stages": ["themed_reel_generation"],
+        "estimated_minutes_per_hour_of_film": 5,
+        "default_options": {
+            "queries": [],           # list of ThemeQuery dicts
+            "existing_checkpoint": None,  # path; defaults to output_dir/analysis_report.json
+        },
+    },
 }

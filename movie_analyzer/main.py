@@ -368,6 +368,150 @@ def run_explainer(args, config: Config) -> None:
     )
 
 
+def _parse_theme_arg(raw: str, default_duration: float, default_min_score: float):
+    """
+    Parse a --theme argument:
+      funny
+      badass:character_001
+      romantic:character_001:character_002
+      badass:character_001:John's Moments
+      romantic:character_001:character_002:Their Love Story
+      custom:my custom descriptor text:My Label
+    Returns a ThemeQuery.
+    """
+    from .themed_reel import ThemeQuery, BUILTIN_THEMES
+
+    parts = [p.strip() for p in raw.split(":")]
+    theme = parts[0]
+    character_ids: list[str] = []
+    label = ""
+    custom_descriptor = ""
+
+    remaining = parts[1:]
+    if theme == "custom":
+        # custom:descriptor[:label]
+        if remaining:
+            custom_descriptor = remaining[0]
+            remaining = remaining[1:]
+        if remaining:
+            label = remaining[0]
+    else:
+        # Collect character IDs (look like "character_NNN" or short ids)
+        while remaining:
+            part = remaining[0]
+            # Heuristic: if it looks like a character id (alphanumeric+underscore, no spaces)
+            if part and " " not in part and (part.startswith("character") or len(part) < 20):
+                character_ids.append(part)
+                remaining = remaining[1:]
+            else:
+                break
+        if remaining:
+            label = ":".join(remaining)  # label may contain colons
+
+    if not label:
+        if character_ids:
+            char_part = " & ".join(character_ids[:2])
+            label = f"{char_part}'s {theme.title()} Moments"
+        else:
+            label = f"{theme.title()} Moments"
+
+    return ThemeQuery(
+        theme=theme,
+        character_ids=character_ids,
+        character_filter_mode="any",
+        custom_descriptor=custom_descriptor,
+        min_score=default_min_score,
+        target_duration=default_duration,
+        label=label,
+    )
+
+
+def run_themed_reels(args, config: Config) -> None:
+    """Generate themed compilations from a saved analysis checkpoint."""
+    from .data_models import Scene, DialogueLine
+    from .themed_reel import ThemeQuery
+    from .themed_reel_generator import generate_all_themed_reels
+
+    checkpoint_path = config.OUTPUT_DIR / "analysis_report.json"
+    data = _load_checkpoint(checkpoint_path)
+    if not data:
+        logger.error(
+            "No analysis checkpoint found at %s. "
+            "Run 'analyze' first: python -m movie_analyzer.main analyze --movie ...",
+            checkpoint_path,
+        )
+        sys.exit(1)
+
+    # Reconstruct scenes from checkpoint
+    scenes: list[Scene] = []
+    for sd in data.get("scenes", []):
+        s = Scene(
+            scene_id=sd["scene_id"],
+            start_time=sd["start_time"],
+            end_time=sd["end_time"],
+            duration=sd["duration"],
+            keyframe_paths=sd.get("keyframe_paths", []),
+            character_ids=sd.get("character_ids", []),
+            caption=sd.get("caption"),
+            dominant_emotion=sd.get("dominant_emotion"),
+            audio_energy=sd.get("audio_energy"),
+            speech_rate=sd.get("speech_rate"),
+            reel_score=sd.get("reel_score"),
+            reel_score_reason=sd.get("reel_score_reason"),
+            dialogue=[
+                DialogueLine(
+                    speaker_id=dl.get("speaker_id"),
+                    text=dl["text"],
+                    start_time=dl["start_time"],
+                    end_time=dl["end_time"],
+                    confidence=dl.get("confidence", 1.0),
+                    emotions=dl.get("emotions"),
+                )
+                for dl in sd.get("dialogue", [])
+            ],
+        )
+        scenes.append(s)
+
+    total_duration = data.get("total_duration", 7200.0)
+    theme_strs = getattr(args, "themes", None) or []
+
+    if not theme_strs:
+        logger.error(
+            "No themes specified. Use --theme THEME (e.g. --theme funny --theme badass). "
+            "Run --list-themes to see options."
+        )
+        sys.exit(1)
+
+    default_dur = getattr(args, "duration", 90.0)
+    default_min = getattr(args, "min_score", 0.25)
+    queries: list[ThemeQuery] = [
+        _parse_theme_arg(t, default_dur, default_min) for t in theme_strs
+    ]
+    for q in queries:
+        logger.info(f"Theme query: '{q.display_label()}' | char filter: {q.character_ids or 'none'}")
+
+    # Optional local LLM for narration
+    local_llm = None
+    try:
+        from .utils.local_llm import LocalLLM
+        local_llm = LocalLLM(
+            backend=config.LLM_BACKEND,
+            ollama_model=config.OLLAMA_MODEL,
+            ollama_host=config.OLLAMA_HOST,
+            transformers_model=config.TRANSFORMERS_LLM_MODEL,
+        )
+    except Exception as e:
+        logger.warning(f"Local LLM unavailable: {e}")
+
+    results = generate_all_themed_reels(
+        queries, scenes, [], args.movie, local_llm, config, total_duration
+    )
+
+    logger.info(f"\nGenerated {len(results)} themed reels:")
+    for query, path in results:
+        logger.info(f"  '{query.display_label()}' → {path}")
+
+
 # ─── CLI ─────────────────────────────────────────────────────────────────────
 
 def build_parser() -> argparse.ArgumentParser:
@@ -424,6 +568,41 @@ def build_parser() -> argparse.ArgumentParser:
     p_exp = sub.add_parser("explainer", parents=[shared],
                             help="Regenerate explainer from checkpoint")
 
+    # themed-reel — curated compilations from a saved checkpoint
+    p_themed = sub.add_parser(
+        "themed-reel",
+        parents=[shared],
+        help="Generate themed compilations from a saved analysis checkpoint",
+    )
+    p_themed.add_argument(
+        "--theme",
+        action="append",
+        dest="themes",
+        metavar="THEME[:CHARACTER_ID[:CHARACTER_ID2]][:LABEL]",
+        help=(
+            "Theme to compile. Format: theme[:char_id[:char2_id]][:label]. "
+            "Repeat for multiple compilations. "
+            "Built-in themes: funny, badass, romantic, sexy, scary, sad, action, dramatic, tense, triumphant. "
+            "Examples:\n"
+            "  --theme funny\n"
+            "  --theme 'badass:character_001:John Wick Moments'\n"
+            "  --theme 'romantic:character_001:character_002:Their Love Story'\n"
+            "  --theme 'custom:My Theme Descriptor'"
+        ),
+    )
+    p_themed.add_argument(
+        "--duration", type=float, default=90.0,
+        help="Target reel duration in seconds (default: 90)",
+    )
+    p_themed.add_argument(
+        "--min-score", type=float, default=0.25,
+        help="Minimum theme match score to include a scene (default: 0.25)",
+    )
+    p_themed.add_argument(
+        "--list-themes", action="store_true",
+        help="Print available built-in themes and exit",
+    )
+
     return parser
 
 
@@ -456,6 +635,16 @@ def main() -> None:
 
     elif args.command == "explainer":
         run_explainer(args, config)
+
+    elif args.command == "themed-reel":
+        if getattr(args, "list_themes", False):
+            from .themed_reel import BUILTIN_THEMES
+            print("\nBuilt-in themes:")
+            for name, td in BUILTIN_THEMES.items():
+                print(f"  {name:<14} — {td['descriptor'][:60]}")
+            print()
+            return
+        run_themed_reels(args, config)
 
 
 if __name__ == "__main__":
